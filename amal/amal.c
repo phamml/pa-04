@@ -4,7 +4,8 @@ PA-04:  Enhanced Needham-Schroeder Key-Exchange with TWO-way Authentication
 FILE:   amal.c         SKELETON  
 
 Written By: 
-     1-  M U S T      T Y P E     Y O U R     N A M E(s)
+     1-  Mia Pham
+     2- Emily Graff
 Submitted on: 
 ----------------------------------------------------------------------------*/
 #include <linux/random.h>
@@ -22,7 +23,7 @@ int main ( int argc , char * argv[] )
     FILE    *log ;
 
     
-    char *developerName = "Code By:  <<YOUR FULL NAME(s) IN UPPERCASE>>" ;
+    char *developerName = "Code By:  <<MIA PHAM>>" ;
     
     printf( "\nThis is Amal's    %s\n" , developerName ) ;
     

@@ -4,7 +4,8 @@ PA-04:  Enhanced Needham-Schroeder Key-Exchange with TWO-way Authentication
 FILE:   basim.c         SKELETON  
 
 Written By: 
-     1-  M U S T      T Y P E     Y O U R     N A M E(s) 
+     1-  Mia Pham
+     2- Emily Graff
 Submitted on: 
 ----------------------------------------------------------------------------*/
 
