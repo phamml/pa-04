@@ -1,0 +1,17 @@
+
+This is Basim's REFERENCE Code by <<ABOUTABL>>
+
+<readFr. Amal> FD=7 , <sendTo Amal> FD=10
+
+Basim has this Master Kb { key , IV }
+    0000 - eb 98 11 c5 00 2c a9 ae-6f 5a f2 4e b8 da 71 26   .....,..oZ.N..q&
+    0010 - cd 73 7c e4 b4 9d 72 d7-d9 ab ce ea b5 2e a3 47   .s|...r........G
+
+    0000 - bb 55 bf b0 0b e3 9f fc-c6 44 38 50 be 58 79 48   .U.......D8P.XyH
+
+
+**************************
+         MSG3 Receive
+**************************
+
+Unable to receive all 4 bytes of lenTktCipher from FD 7 in MSG3_receive() ... EXITING

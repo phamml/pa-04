@@ -4,7 +4,7 @@ PA-04:  Enhanced Needham-Schroeder Key-Exchange with TWO-way Authentication
 FILE:   basim.c         SKELETON  
 
 Written By: 
-     1-  Mia Pham
+     1- Mia Pham
      2- Emily Graff
 Submitted on: 
 ----------------------------------------------------------------------------*/
@@ -134,7 +134,7 @@ int main ( int argc , char * argv[] )
                   
     fprintf( log , "Basim received Message 5 from Amal on FD %d with this f( Nb ) >>>> " , fd_A2B ) ;
     // Validate f( Nb ) 
-    if ( /* fNb is the same as fNbCpy   .. use memcmp() */ )  )
+    if ( /* fNb is the same as fNbCpy   .. use memcmp() */ )
     {
         fprintf( log , "VALID\n" ) ;
     }

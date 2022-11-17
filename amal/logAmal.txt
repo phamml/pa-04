@@ -1,0 +1,44 @@
+
+This is Amal's Code By:  <<MIA PHAM>>
+.
+<readFr. KDC> FD=5 , <sendTo KDC> FD=4 , <readFr. Basim> FD=9 , <sendTo Basim> FD=8
+
+Amal has this Master Ka { key , IV }
+    0000 - 95 de 35 97 11 0c 6a e0-81 3c 06 ea 78 2f 22 7b   ..5...j..<..x/"{
+    0010 - bb 1d 3d 68 74 d7 4f a9-d9 5a 6d 87 9a 9a f4 1f   ..=ht.O..Zm.....
+
+    0000 - cd ec 0e 9b b3 bc 6f 27-79 af c7 af d4 4c 36 b8   ......o'y....L6.
+
+
+**************************
+         MSG1 New
+**************************
+
+The following new MSG1 ( 46 bytes ) has been created by MSG1_new ():
+    0000 - 0f 00 00 00 4d 61 64 61-61 68 20 45 6c 2d 41 6d   ....Madaah El-Am
+    0010 - 61 72 00 13 00 00 00 48-61 73 65 65 62 61 6b 20   ar.....Haseebak 
+    0020 - 4c 69 7a 2d 5a 61 6d 61-6e 00 d3 fc 4d 5d         Liz-Zaman...M]
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Amal sent message 1 ( 46 bytes ) to the KDC on FD 4 with
+    IDa ='Madaah El-Amar' , IDb = 'Haseebak Liz-Zaman'
+    Na ( 4 Bytes ) is
+    0000 - d3 fc 4d 5d                                       ..M]
+
+
+**************************
+         MSG2 Receive
+**************************
+
+The following Encrypted MSG2 ( 160 bytes ) has been received from FD 5 Successfully
+    0000 - b2 e8 31 57 95 62 3f e1-47 fa b6 42 4b 65 56 86   ..1W.b?.G..BKeV.
+    0010 - 81 26 5d 1b 11 f4 1d c0-0a 4f 06 f6 5b 3e 7a 28   .&]......O..[>z(
+    0020 - 5f 00 b1 81 6e 69 68 ac-d9 d2 87 07 29 4a 25 dd   _...nih.....)J%.
+    0030 - 1b 61 d0 3c 76 8b f9 5e-72 bf e9 a3 f1 11 89 cd   .a.<v..^r.......
+    0040 - 82 58 3b 2f e8 3a 5d df-7b 8a 8b 6f 6a 61 92 05   .X;/.:].{..oja..
+    0050 - d7 8f 07 0b 11 70 89 5f-06 5f 04 8d ab 12 11 47   .....p._._.....G
+    0060 - 82 2b d7 3a 11 6c 0d 9d-79 4a c9 b7 9a 00 76 08   .+.:.l..yJ....v.
+    0070 - 60 cb 37 c4 8c 0b 32 da-45 a1 17 f7 30 8f 0e 91   `.7...2.E...0...
+    0080 - 9f 53 ca 8b 0c 8e 76 e0-02 86 7a cb 4f b3 c1 93   .S....v...z.O...
+    0090 - 8a fe 24 39 da bd 45 7c-01 fc 88 c9 a2 74 0f 94   ..$9..E|.....t..
+
