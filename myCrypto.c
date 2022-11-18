@@ -4,7 +4,7 @@ My Cryptographic Library
 FILE:   myCrypto.c         SKELETON  
 
 Written By: 
-     1-  Mia Pham
+     1- Mia Pham
      2- Emily Graff
 Submitted on: 
 ----------------------------------------------------------------------------*/
@@ -511,6 +511,13 @@ unsigned MSG1_new ( FILE *log , uint8_t **msg1 , const char *IDa , const char *I
 
     // Allocate memory for msg1. MUST always check malloc() did not fail
     *msg1 = malloc (LenMsg1);
+    if( *msg1 == NULL ) 
+    {
+        fprintf( log , "Out of Memory allocating %u bytes for MSG1"
+                       " in MSG1_new ... EXITING\n" , LenMsg1 );       
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nOut of Memory allocating for IDa of MSG1 in MSG1_new\n" );
+    }
 
     // Fill in Msg1:  Len( IDa )  ||  IDa   ||  Len( IDb )  ||  IDb   ||  Na
     p = *msg1;
@@ -569,7 +576,6 @@ void  MSG1_receive( FILE *log , int fd , char **IDa , char **IDb , Nonce_t *Na )
         fflush( log ) ;  fclose( log ) ;    
         exitError( "" );
     }
-
    
     // Read in the components of Msg1:  L(A)  ||  A   ||  L(B)  ||  B   ||  Na
     // 1) Read Len(IDa)  
@@ -646,49 +652,51 @@ void  MSG1_receive( FILE *log , int fd , char **IDa , char **IDb , Nonce_t *Na )
 unsigned MSG3_new( FILE *log , uint8_t **msg3 , const unsigned lenTktCipher , const uint8_t *tktCipher,  
                    const Nonce_t *Na2 )
 {
-    // unsigned LenMsg3 ;
-    // uint8_t  *p ;    
-    // unsigned *lenPtr ;    
+    unsigned LenMsg3 ;
+    uint8_t  *p ;    
+    unsigned *lenPtr ;    
 
-    // fprintf( log , "\n**************************\n");
-    // fprintf( log , "         MSG3 New\n");
-    // fprintf( log , "**************************\n\n");
-    // //
-    // // .....  Missing Code
-    // //
+    fprintf( log , "\n**************************\n");
+    fprintf( log , "         MSG3 New\n");
+    fprintf( log , "**************************\n\n");
+    if (log == NULL || msg3 == NULL || tktCipher == NULL || Na2 == NULL)
+    {
+        fprintf( log , "NULL pointer(s) passed to MSG3_new() ... EXITING\n"  );        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "NULL pointer(s) passed to MSG3_new()" );
+    }
 
-    // LenMsg3 = /* ... */ 
-    // ;
-    // // Allocate memory for msg3. MUST always check malloc() did not fail
-    // //
-    // // .....  Missing Code
-    // //
+    LenMsg3 = LENSIZE + lenTktCipher + NONCELEN;
+    // Allocate memory for msg3. MUST always check malloc() did not fail
+    *msg3 = malloc(LenMsg3);
+    if (*msg3 == NULL)
+    {
+        fprintf( log , "Out of Memory allocating %u bytes for MSG3"
+                       " in MSG3_new ... EXITING\n" , LenMsg3 );       
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nOut of Memory allocating for IDa of MSG3 in MSG3_new\n" );
+    }
 
+    // Fill in Msg3:  Len( TktCipher )  ||  TktCipher   ||  Na2
+    p = *msg3 ;
 
-    // p = *msg3 ;    
-    // // Set lenTktCipher  and  tktCipher  components of Msg3
+    // Set lenTktCipher  and  tktCipher  components of Msg3
+    lenPtr = (unsigned *) p;
+    *lenPtr = lenTktCipher;
+    p += LENSIZE;
+    memcpy(p, tktCipher, lenTktCipher);
+    p += lenTktCipher;
 
-    // //
-    // // .....  Missing Code
-    // //
+    // Set the Na component of MSG3
+    memcpy(p, Na2, NONCELEN);
 
-    
-    // // Set the Na component of MSG3
-    // // Set lenTktCipher  and  tktCipher  components of Msg3
-    // // Set the Na component of MSG3 
-    // //
-    // // .....  Missing Code
-    // //
+    fprintf( log , "The following new MSG3 ( %u bytes ) has been created by "
+                   "MSG3_new ():\n" , LenMsg3 ) ;
+    BIO_dump_indent_fp(log, *msg3, LenMsg3, 4);    fprintf( log , "\n" ) ;  
 
-    // fprintf( log , "The following new MSG3 ( %u bytes ) has been created by "
-    //                "MSG3_new ():\n" , LenMsg3 ) ;
-    // //
-    // // .....  Missing Code
-    // //
+    fflush( log ) ;    
 
-    // fflush( log ) ;    
-
-    // return( LenMsg3 ) ;
+    return( LenMsg3 ) ;
 }
 
 //-----------------------------------------------------------------------------
@@ -700,71 +708,77 @@ unsigned MSG3_new( FILE *log , uint8_t **msg3 , const unsigned lenTktCipher , co
 
 void MSG3_receive( FILE *log , int fd , const myKey_t *Kb , myKey_t *Ks , char **IDa , Nonce_t *Na2 )
 {
-    // uint8_t  *tktCipher ;     
-    // unsigned  lenTktCipher , lenTktPlain ;
-    // unsigned *lenPtr , LenA , LenMsg3;    
+    uint8_t  *tktCipher ;     
+    unsigned  lenTktCipher , lenTktPlain ;
+    unsigned *lenPtr , LenA , LenMsg3;    
 
-    // fprintf( log , "\n**************************\n");
-    // fprintf( log , "         MSG3 Receive\n");
-    // fprintf( log , "**************************\n\n");
-    // //
-    // // .....  Missing Code
-    // //
+    fprintf( log , "\n**************************\n");
+    fprintf( log , "         MSG3 Receive\n");
+    fprintf( log , "**************************\n\n");
+    if (log == NULL || Kb == NULL || Ks == NULL || IDa == NULL || Na2 == NULL)
+    {
+        fprintf( log , "NULL pointer(s) passed to MSG3_recieve() ... EXITING\n"  );        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "NULL pointer(s) passed to MSG3_recieve()" );
+    }
+    fflush(log);
 
-    // // Read Len(Message 3)  
-    // //
-    // // .....  Missing Code
-    // //
+    // I) Read 1st part of MSG#3: The TicketCiphertext len and TicketCiphertext
+    // into the global scratch buffer ciphertext[]. Make sure it fits
+    if ( read( fd , &lenTktCipher , LENSIZE  ) !=  LENSIZE  )
+    {
+        fprintf( log , "Unable to read all %lu bytes of Len(TktCiphertext) from FD %d in "
+                       "MSG3_receive() ... EXITING\n" , LENSIZE , fd );
+        
+        fflush( log ) ;  fclose( log ) ;    
+        exitError( "" );
+    }
 
-    // // I) Read 1st part of MSG#3: The TicketCiphertext
-    // // into the global scratch buffer ciphertext[]. Make sure it fits
-    // //
-    // // .....  Missing Code
-    // //
-    // fprintf( log ,"The following Encrypted TktCipher ( %d bytes ) was received "
-    //               "via FD %d by MSG3_receive()\n" , lenTktCipher , fd );
-    // //
-    // // .....  Missing Code
-    // //
+    if ( read( fd , ciphertext , lenTktCipher  ) !=  lenTktCipher )
+    {
+        fprintf( log , "Unable to read all %u bytes of TicketCiphertext from FD %d in "
+                       "MSG3_receive() ... EXITING\n" , lenTktCipher , fd );
+        
+        fflush( log ) ;  fclose( log ) ;    
+        exitError( "" );
+    }
+    fprintf( log ,"The following Encrypted TktCipher ( %d bytes ) was received "
+                  "via FD %d by MSG3_receive()\n" , lenTktCipher , fd );
+    BIO_dump_indent_fp(log, ciphertext, lenTktCipher, 4);    fprintf( log , "\n" ) ;  
+    fflush(log);
 
+    // I.1) Decrypt the ticket into the global scratch buffer decryptext[]. Make sure it fits
+    lenTktPlain =  decrypt(ciphertext, lenTktCipher, Kb->key, Kb->iv, decryptext);
 
-    // fprintf( log ,"The following Encrypted TktCipher ( %d bytes ) was received "
-    //               "via FD %d by MSG3_receive()\n" , lenTktCipher , fd );
-    // //
-    // // .....  Missing Code
-    // //
+    fprintf( log ,"Here is the Decrypted Ticket ( %d bytes ) in MSG3_receive():\n" , lenTktPlain ) ;
+    BIO_dump_indent_fp(log, decryptext, lenTktPlain, 4);    fprintf( log , "\n" ) ;
+    fflush(log);  
 
-    // // I.1) Decrypt the ticket into the global scratch buffer decryptext[]. Make sure it fits
-    // //
-    // // .....  Missing Code
-    // //
+    // Start parsing the Ticket into the Caller-provided arguments
+    uint8_t  *p = decryptext ;
 
-    // fprintf( log ,"Here is the Decrypted Ticket ( %d bytes ) in MSG3_receive():\n" , lenTktPlain ) ;
-    // //
-    // // .....  Missing Code
-    // //
+    // I.2) Parse the session key Ks and copy it to caller's buffer
+    memcpy(Ks, p, KEYSIZE);
+    p += KEYSIZE;
 
-    // // Start parsing the Ticket into the Caller-provided arguments
-    // uint8_t  *p = decryptext ;
+    // I.3) Parse IDA    
+    //     I.3.1) Allocate buffer for the caller to hold IDA
+    //     I.3.2)  Copy IDA to caller's buffer
+    lenPtr = (unsigned *) p    ;   LenA  = *lenPtr    ;          p += LENSIZE ;
+    memcpy( *IDa, p, LenA )  ; 
+    p += LenA;
 
-    // // I.2) Parse the session key Ks and copy it to caller's buffer
-    // //
-    // // .....  Missing Code
-    // //
+    // II) Finally, read the last part of MSG3: Na2
+    if ( read( fd , Na2 , NONCELEN  ) !=  NONCELEN)
+    {
+        fprintf( log , "Unable to read all %lu bytes of Na2 from FD %d in "
+                       "MSG3_receive() ... EXITING\n" , NONCELEN , fd );
+        
+        fflush( log ) ;  fclose( log ) ;    
+        exitError( "" );
+    } 
 
-    // // I.3) Parse IDA    
-    // //     I.3.1) Allocate buffer for the caller to hold IDA
-    // //     I.3.2)  Copy IDA to caller's buffer
-    // //
-    // // .....  Missing Code
-    // //
-
-    // // II) Finally, read the last part of MSG3: Na2
-    // //
-    // // .....  Missing Code
-    // //
-
-    // return ;
+    return ;
 }
 
 //-----------------------------------------------------------------------------
@@ -777,45 +791,55 @@ void MSG3_receive( FILE *log , int fd , const myKey_t *Kb , myKey_t *Ks , char *
 
 unsigned MSG4_new( FILE *log , uint8_t **msg4, const myKey_t *Ks , Nonce_t *fNa2 , Nonce_t *Nb )
 {
-//     uint8_t  *p ;    
-//     unsigned *lenPtr ;
+    uint8_t  *p ;    
+    unsigned *lenPtr , LenMsg4 , lenPlaintext;
 
-//     fprintf( log , "\n**************************\n");
-//     fprintf( log , "         MSG4 New\n");
-//     fprintf( log , "**************************\n\n");
-//     //
-//     // .....  Missing Code
-//     //
+    fprintf( log , "\n**************************\n");
+    fprintf( log , "         MSG4 New\n");
+    fprintf( log , "**************************\n\n");
+    if (log == NULL, msg4 == NULL || Ks == NULL || fNa2 == NULL || Nb == NULL) 
+    {
+        fprintf( log , "NULL pointer(s) passed to MSG4_new() ... EXITING\n"  );        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "NULL pointer(s) passed to MSG4_new()" );
+    }
+    fflush(log);
 
-//     // Construct MSG4 Plaintext = { f(Na2)  ||  Nb }
-//     // Use the global scratch buffer plaintext[] for MSG4 plaintext and fill it in with component values
-//     //
-//     // .....  Missing Code
-//     //
+    // Construct MSG4 Plaintext = { f(Na2)  ||  Nb }
+    // Use the global scratch buffer plaintext[] for MSG4 plaintext and fill it in with component values
+    lenPlaintext = NONCELEN + NONCELEN;
+    p = plaintext;
 
- 
-//     // Now, encrypt MSG4 plaintext using the session key Ks;
-//     // Use the global scratch buffer ciphertext[] to collect the result.  Make sure it fits.
-//     //
-//     // .....  Missing Code
-//     //
+    // Copy f(Na2) into plaintext buffer
+    memcpy( p , fNa2 , NONCELEN ) ;                        
+    p += NONCELEN ;
 
-//     // Now allocate a buffer for the caller, and copy the encrypted MSG4 to it
-//     *msg4 = malloc( /* .... */  ) ;
-//     //
-//     // .....  Missing Code
-//     //
+    // Copy Nb into plaintext buffer
+    memcpy( p , Nb , NONCELEN ) ;                        
+    p += NONCELEN ;
+    // Now, encrypt MSG4 plaintext using the session key Ks;
+    // Use the global scratch buffer ciphertext[] to collect the result.  Make sure it fits.
+    LenMsg4 = encrypt( plaintext, lenPlaintext, Ks->key, Ks->iv , ciphertext );
 
-//     fprintf( log , "The following new Encrypted MSG4 ( %u bytes ) has been"
-//                    " created by MSG4_new ():  \n" , LenMsg4 ) ;
-//     //
-//     // .....  Missing Code
-//     //
+    // Now allocate a buffer for the caller, and copy the encrypted MSG4 to it
+    *msg4 = malloc( LenMsg4 ) ;
+    if( *msg4 == NULL ) 
+    {
+        fprintf( log , "Out of Memory allocating %u bytes for MSG4 Ciphertext"
+                       " in MSG4_new ... EXITING\n" , LenMsg4 );       
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nOut of Memory allocating for Ciphertext of MSG4 in MSG4_new\n" );
+    }
 
-//     fflush( log ) ;    
+    memcpy( *msg4 , ciphertext , LenMsg4 ) ;                           
 
-//     return LenMsg4 ;
-    
+    fprintf( log , "The following new Encrypted MSG4 ( %u bytes ) has been"
+                   " created by MSG4_new ():  \n" , LenMsg4 ) ;
+    BIO_dump_indent_fp(log, *msg4, LenMsg4, 4);    fprintf( log , "\n" ) ;  
+
+    fflush( log ) ;    
+
+    return LenMsg4 ;
 }
 
 // //-----------------------------------------------------------------------------
@@ -824,42 +848,62 @@ unsigned MSG4_new( FILE *log , uint8_t **msg4, const myKey_t *Ks , Nonce_t *fNa2
 
 void  MSG4_receive( FILE *log , int fd , const myKey_t *Ks , Nonce_t *rcvd_fNa2 , Nonce_t *Nb )
 {
-//     // MSG4 = Encr( Ks ,  { f(Na2) || Nb }  ) by Basim
+    // MSG4 = Encr( Ks ,  { f(Na2) || Nb }  ) by Basim
 
-//     uint8_t  *p ;    
-//     unsigned  LenMsg4 , LenMSG4cipher  ;
+    uint8_t  *p ;    
+    unsigned  LenMsg4 , LenMSG4cipher  ;
 
-//     fprintf( log , "\n**************************\n");
-//     fprintf( log , "         MSG4 Receive\n");
-//     fprintf( log , "**************************\n\n");
+    fprintf( log , "\n**************************\n");
+    fprintf( log , "         MSG4 Receive\n");
+    fprintf( log , "**************************\n\n");
+    if (log == NULL || Ks == NULL || rcvd_fNa2 == NULL || Nb == NULL)
+    {
+        fprintf( log , "NULL pointer(s) passed to MSG4_recieve() ... EXITING\n"  );        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "NULL pointer(s) passed to MSG4_recieve()" );
+    }
 
-//     // Read Len( Msg4 ) followed by reading Msg4 itself
-//     // Always make sure read() and write() succeed    
-//     // Use the global scratch buffer ciphertext[] to receive MSG4. Make sure it fits. 
-//     //
-//     // .....  Missing Code
-//     //
+    // Read Len( Msg4 ) followed by reading Msg4 itself
+    // Always make sure read() and write() succeed    
+    // Use the global scratch buffer ciphertext[] to receive MSG4. Make sure it fits. 
+    if ( read( fd , &LenMSG4cipher , LENSIZE  ) !=  LENSIZE  )
+    {
+        fprintf( log , "Unable to read all %lu bytes of Len(MSG4) from FD %d in "
+                       "MSG4_receive() ... EXITING\n" , LENSIZE , fd );
+        
+        fflush( log ) ;  fclose( log ) ;    
+        exitError( "" );
+    }
 
-//     fprintf( log ,"\nThe following Encrypted MSG4 ( %u bytes ) was received"
-//                   " from FD %d :\n" , LenMSG4cipher , fd );
-//     //
-//     // .....  Missing Code
-//     //
+    if ( read( fd , ciphertext , LenMSG4cipher  ) !=  LenMSG4cipher )
+    {
+        fprintf( log , "Unable to read all %u bytes of Msg4 from FD %d in "
+                       "MSG3_receive() ... EXITING\n" , LenMSG4cipher , fd );
+        
+        fflush( log ) ;  fclose( log ) ;    
+        exitError( "" );
+    }
 
-//     // Now, Decrypt MSG4 using Ks
-//     // Use the global scratch buffer decryptext[] to collect the results of decryption.
-//     // Make sure it fits.
-//     //
-//     // .....  Missing Code
-//     //
+    fprintf( log ,"\nThe following Encrypted MSG4 ( %u bytes ) was received"
+                  " from FD %d :\n" , LenMSG4cipher , fd );
+    BIO_dump_indent_fp(log, ciphertext, LenMSG4cipher, 4);    fprintf( log , "\n" ) ;  
 
+    // Now, Decrypt MSG4 using Ks
+    // Use the global scratch buffer decryptext[] to collect the results of decryption.
+    // Make sure it fits.
+    LenMsg4 = decrypt(ciphertext, LenMSG4cipher, Ks->key, Ks->iv, decryptext);
 
-//     // Parse MSG4 into its components f( Na2 ) and Nb
-//     //
-//     // .....  Missing Code
-//     //
+    // Parse MSG4 into its components f( Na2 ) and Nb
+    p = decryptext;
 
-//     return ;
+    // Parse f(Na2) and copy it into buffer
+    memcpy(rcvd_fNa2, p, NONCELEN);
+    p += NONCELEN;
+
+    // Parse Nb and copy it into buffer
+    memcpy(Nb, p, NONCELEN);
+
+    return ;
 }
 
 //-----------------------------------------------------------------------------
@@ -871,39 +915,39 @@ void  MSG4_receive( FILE *log , int fd , const myKey_t *Ks , Nonce_t *rcvd_fNa2 
 
 unsigned MSG5_new( FILE *log , uint8_t **msg5, const myKey_t *Ks ,  Nonce_t *fNb )
 {
-    // uint8_t  *p ;
-    // unsigned msg5PlainLen ;
+    uint8_t  *p ;
+    unsigned msg5PlainLen ;
     
-    // fprintf( log , "\n**************************\n");
-    // fprintf( log , "         MSG5 New\n");
-    // fprintf( log , "**************************\n\n");
+    fprintf( log , "\n**************************\n");
+    fprintf( log , "         MSG5 New\n");
+    fprintf( log , "**************************\n\n");
+    if (log == NULL || msg5 == NULL || Ks == NULL || fNb == NULL)
+    {
+        fprintf( log , "NULL pointer(s) passed to MSG5_new() ... EXITING\n"  );        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "NULL pointer(s) passed to MSG5_new()" );
+    }
 
-    // // Construct MSG5 Plaintext  = {  f(Nb)  }
-    // // Use the global scratch buffer plaintext[] for MSG5 plaintext. Make sure it fits 
-    // //
-    // // .....  Missing Code
-    // //
+    // Construct MSG5 Plaintext  = {  f(Nb)  }
+    // Use the global scratch buffer plaintext[] for MSG5 plaintext. Make sure it fits 
+    msg5PlainLen = NONCELEN;
+    p = plaintext;
+    memcpy (p, fNb, NONCELEN);
 
-    // // Now, encrypt( Ks , {plaintext} );
-    // // Use the global scratch buffer ciphertext[] to collect result. Make sure it fits.
-    // //
-    // // .....  Missing Code
-    // //
-
-    // // Now allocate a buffer for the caller, and copy the encrypted MSG5 to it
-    // //
-    // // .....  Missing Code
-    // //
+    // Now, encrypt( Ks , {plaintext} );
+    // Use the global scratch buffer ciphertext[] to collect result. Make sure it fits.
+    unsigned LenMSG5cipher = encrypt (plaintext, msg5PlainLen, Ks->key, Ks->iv, ciphertext);
+    // Now allocate a LenMSG5cipher for the caller, and copy the encrypted MSG5 to it
+    *msg5 = malloc(LenMSG5cipher);
+    memcpy(*msg5, ciphertext, LenMSG5cipher);
  
-    // fprintf( log , "The following new Encrypted MSG5 ( %u bytes ) has been"
-    //                " created by MSG5_new ():  \n" , LenMSG5cipher ) ;
-    // //
-    // // .....  Missing Code
-    // //
+    fprintf( log , "The following new Encrypted MSG5 ( %u bytes ) has been"
+                   " created by MSG5_new ():  \n" , LenMSG5cipher ) ;
+    BIO_dump_indent_fp( log , *msg5 , LenMSG5cipher , 4 ) ;    fprintf( log , "\n" ) ;    
 
-    // fflush( log ) ;    
+    fflush( log ) ;    
 
-    // return LenMSG5cipher ;
+    return LenMSG5cipher ;
     
 }
 
@@ -913,47 +957,54 @@ unsigned MSG5_new( FILE *log , uint8_t **msg5, const myKey_t *Ks ,  Nonce_t *fNb
 
 void  MSG5_receive( FILE *log , int fd , const myKey_t *Ks , Nonce_t *fNb )
 {
-    // uint8_t  *p ;    
-    // unsigned  LenMsg5 , LenMSG5cipher , *lenPtr , LenNonce ;
+    uint8_t  *p ;    
+    unsigned  LenMsg5 , LenMSG5cipher , *lenPtr , LenNonce ;
 
-    // fprintf( log , "\n**************************\n");
-    // fprintf( log , "         MSG5 Receive\n");
-    // fprintf( log , "**************************\n\n");
+    fprintf( log , "\n**************************\n");
+    fprintf( log , "         MSG5 Receive\n");
+    fprintf( log , "**************************\n\n");
+    if (log == NULL || Ks == NULL || fNb == NULL)
+    {
+        fprintf( log , "NULL pointer(s) passed to MSG5_recieve() ... EXITING\n"  );        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "NULL pointer(s) passed to MSG5_recieve()" );
+    }
 
-    // // Read Len( Msg5 ) followed by reading Msg5 itself
-    // // Always make sure read() and write() succeed
-    // //
-    // // .....  Missing Code
-    // //
+    // Read Len( Msg5 ) followed by reading Msg5 itself
+    // Always make sure read() and write() succeed
+    if ( read( fd , &LenMSG5cipher , LENSIZE  ) !=  LENSIZE  )
+    {
+        fprintf( log , "Unable to read all %lu bytes of Len(MSG5) from FD %d in "
+                       "MSG5_receive() ... EXITING\n" , LENSIZE , fd );
+        
+        fflush( log ) ;  fclose( log ) ;    
+        exitError( "" );
+    }
 
-    // // Use the global scratch buffer ciphertext[] to receive encrypted MSG5.
-    // // Make sure it fits.
-    // //
-    // // .....  Missing Code
-    // //
+    // Use the global scratch buffer ciphertext[] to receive encrypted MSG5.
+    // Make sure it fits.
+    if ( read( fd , ciphertext , LenMSG5cipher  ) !=  LenMSG5cipher  )
+    {
+        fprintf( log , "Unable to read all %u bytes of MSG5 from FD %d in "
+                       "MSG5_receive() ... EXITING\n" , LenMSG5cipher , fd );
+        
+        fflush( log ) ;  fclose( log ) ;    
+        exitError( "" );
+    }
 
+    fprintf( log ,"The following Encrypted MSG5 ( %u bytes ) has been received"
+                  " from FD %d :\n" , LenMSG5cipher , fd );
 
-    // fprintf( log ,"The following Encrypted MSG5 ( %u bytes ) has been received"
-    //               " from FD %d :\n" , LenMSG5cipher , fd );
-    // //
-    // // .....  Missing Code
-    // //
+    // Now, Decrypt MSG5 using Ks
+    // Use the global scratch buffer decryptext[] to collect the results of decryption
+    // Make sure it fits
+    LenMsg5 = decrypt(ciphertext, LenMSG5cipher, Ks->key, Ks->iv, decryptext);
 
+    // Parse MSG5 into its components f( Nb )
+    p = decryptext;
+    memcpy(fNb, decryptext, NONCELEN);
 
-    // // Now, Decrypt MSG5 using Ks
-    // // Use the global scratch buffer decryptext[] to collect the results of decryption
-    // // Make sure it fits
-    // //
-    // // .....  Missing Code
-    // //
-
-
-    // // Parse MSG5 into its components f( Nb )
-    // //
-    // // .....  Missing Code
-    // //
-
-    // return ;
+    return ;
 }
 
 //-----------------------------------------------------------------------------

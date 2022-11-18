@@ -1,5 +1,5 @@
 
-This is Basim's REFERENCE Code by <<ABOUTABL>>
+This is Basim's Code by <<MIA PHAM>>
 
 <readFr. Amal> FD=7 , <sendTo Amal> FD=10
 
@@ -14,4 +14,61 @@ Basim has this Master Kb { key , IV }
          MSG3 Receive
 **************************
 
-Unable to receive all 4 bytes of lenTktCipher from FD 7 in MSG3_receive() ... EXITING
+The following Encrypted TktCipher ( 80 bytes ) was received via FD 7 by MSG3_receive()
+    0000 - 2f c7 0a 05 92 9e d0 f1-d4 0c 8e 24 5e 3d 86 b7   /..........$^=..
+    0010 - 1c fc d2 7b ff 8a 1b d4-8c 0b 6a 86 d0 81 eb 33   ...{......j....3
+    0020 - 93 5f 7f 74 fd a2 ec 5b-b7 9a 4a 10 d3 ae a5 50   ._.t...[..J....P
+    0030 - c9 b2 79 4a ff 45 54 12-4a 35 11 28 31 ba ca 85   ..yJ.ET.J5.(1...
+    0040 - 89 48 31 5f d7 2d e8 6f-a5 76 43 94 e5 42 d4 6a   .H1_.-.o.vC..B.j
+
+Here is the Decrypted Ticket ( 67 bytes ) in MSG3_receive():
+    0000 - 3d 8f 35 08 0a ab 7f 62-99 7a ff f8 89 07 76 d2   =.5....b.z....v.
+    0010 - bb 10 13 a6 f7 57 1d de-0b 2e de 82 0c c6 6e 14   .....W........n.
+    0020 - b8 e1 ce 77 f2 0f 60 9a-6c 9e 84 e9 a3 a2 46 ab   ...w..`.l.....F.
+    0030 - 0f 00 00 00 4d 61 64 61-61 68 20 45 6c 2d 41 6d   ....Madaah El-Am
+    0040 - 61 72 00                                          ar.
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Basim received Message 3 from Amal on FD 7 with the following
+    Session Ks { Key , IV }
+    0000 - 3d 8f 35 08 0a ab 7f 62-99 7a ff f8 89 07 76 d2   =.5....b.z....v.
+    0010 - bb 10 13 a6 f7 57 1d de-0b 2e de 82 0c c6 6e 14   .....W........n.
+    0020 - b8 e1 ce 77 f2 0f 60 9a-6c 9e 84 e9 a3 a2 46 ab   ...w..`.l.....F.
+
+
+Basim also learned the following
+    IDa= 'Madaah El-Amar'
+    Na2 ( 4 Bytes ) is:
+    0000 - 70 88 d0 43                                       p..C
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Basim computed this f(Na2) for MSG4:
+    0000 - 70 88 d0 44                                       p..D
+Basim Created this nonce Nb for MSG4:
+    0000 - 38 c1 8b 47                                       8..G
+
+**************************
+         MSG4 New
+**************************
+
+The following new Encrypted MSG4 ( 16 bytes ) has been created by MSG4_new ():  
+    0000 - 6e 0e d6 63 1c 9c 1d 56-79 a0 e6 4f 73 ed df d8   n..c...Vy..Os...
+
+Basim Sent the above MSG4 to Amal on FD 10
+
+**************************
+         MSG5 Receive
+**************************
+
+The following Encrypted MSG5 ( 16 bytes ) has been received from FD 7 :
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+Basim expecting back this fNb in MSG5:
+    0000 - 38 c1 8b 48                                       8..H
+Basim received Message 5 from Amal on FD 7 with this f( Nb ) >>>> VALID
+    0000 - 38 c1 8b 48                                       8..H
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+Basim has terminated normally. Goodbye

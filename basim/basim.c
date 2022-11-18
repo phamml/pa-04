@@ -24,7 +24,7 @@ int main ( int argc , char * argv[] )
     FILE     *log ;
     myKey_t   Kb ;    // Basim's master key with the KDC    
 
-    char *developerName = "Code by <<YOUR FULL NAME(s) IN UPPERCASE>>" ;
+    char *developerName = "Code by <<MIA PHAM>>" ;
     printf( "\nThis is Basim's   %s\n" ,  developerName ) ;
 
     if( argc < 3 )
@@ -33,8 +33,8 @@ int main ( int argc , char * argv[] )
                "<sendTo Amal>\n\n", argv[0]) ;
         exit(-1) ;
     }
-    fd_A2B    = ...... ;  // Read from Amal   File Descriptor
-    fd_B2A    = ...... ;  // Send to   Amal   File Descriptor
+    fd_A2B    = atoi(argv[1]) ;  // Read from Amal   File Descriptor
+    fd_B2A    = atoi(argv[2]) ;  // Send to   Amal   File Descriptor
 
     log = fopen("basim/logBasim.txt" , "w" );
     if( ! log )
@@ -47,17 +47,18 @@ int main ( int argc , char * argv[] )
     fprintf( log , "\n<readFr. Amal> FD=%d , <sendTo Amal> FD=%d\n" , fd_A2B , fd_B2A );
 
     // Get Basim's master keys with the KDC
-    if( ! getMasterKeyFromFiles( /* .... */ ) )
+    if( ! getMasterKeyFromFiles("./basim/basimKey.bin", "./basim/basimIV.bin", &Kb))
     { 
         fprintf( stderr , "\nCould not open Basim's Masker key files\n"); 
         fprintf( log , "\nCould not open Basim's Masker key files\n"); 
         fclose( log ) ; exit(-1) ; 
     }
     fprintf( log , "\nBasim has this Master Kb { key , IV }\n"  ) ;
-    BIO_dump_indent_fp ( log , /* key part */ );
+    BIO_dump_indent_fp ( log , (const char *) Kb.key, SYMMETRIC_KEY_LEN, 4 );
     fprintf( log , "\n" );
-    BIO_dump_indent_fp ( log , /* iv  part */ );
+    BIO_dump_indent_fp ( log , (const char *) Kb.iv, INITVECTOR_LEN, 4 );
     fprintf( log , "\n") ; 
+    fflush(log);
 
     //*************************************
     // Receive  & Process   Message 3
@@ -67,21 +68,19 @@ int main ( int argc , char * argv[] )
     Nonce_t   Na2;    // Amal's nonce to Basim.
 
     // Get MSG3 from Amal
-    MSG3_receive( /* ... */ ) ; 
-
+    MSG3_receive( log, fd_A2B, &Kb, &Ks, &IDa, &Na2 ) ; 
+    fprintf(log, "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
+    fflush(log);
     fprintf( log , "Basim received Message 3 from Amal on FD %d "
-                   "with the following\n    Session Ks { Key , IV}\n" , fd_A2B  );
- 
-    //
-    // .....  Missing Code
-    //
+                   "with the following\n    Session Ks { Key , IV }\n" , fd_A2B  );
+    BIO_dump_indent_fp ( log , (const char *) &Ks, sizeof( myKey_t ) , 4 );    fprintf( log , "\n" );   
+    fflush(log);
 
-    fprintf( log , "Basim also learned the following\n    IDa= '%s'\n" , IDa );
+    fprintf( log , "\nBasim also learned the following\n    IDa= '%s'\n" , IDa );
+    
     fprintf( log , "    Na2 ( %lu Bytes ) is:\n" , NONCELEN );
- 
-    //
-    // .....  Missing Code
-    //
+    BIO_dump_indent_fp ( log , (const char *) Na2, NONCELEN, 4 );
+    fflush(log);
 
 
     //*************************************
@@ -92,31 +91,35 @@ int main ( int argc , char * argv[] )
     unsigned  LenMsg4 ;
 
     // Compute fNa2 = f(Na2)
- 
-    fprintf( log , "Basim computed this f(Na2) for MSG4:\n") ;
-    //
-    // .....  Missing Code
-    //
- 
-    // Create a random Nonce by B to challenge A
-    RAND_bytes( /* ... */ ); 
-    fprintf( log , "Basim Created this nonce Nb for MSG4:\n") ;
-    //
-    // .....  Missing Code
-    //
+    fNonce(fNa2, Na2);
+    fprintf(log, "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
+    fprintf( log , "\nBasim computed this f(Na2) for MSG4:\n") ;
+    BIO_dump_indent_fp ( log , (const char *) fNa2, NONCELEN, 4 );
+    fflush(log);
 
-    LenMsg4 = MSG4_new( /* ... */ ) ;
+    // Create a random Nonce by B to challenge A
+    RAND_bytes( (unsigned char *) Nb , NONCELEN  ); 
+    fprintf( log , "Basim Created this nonce Nb for MSG4:\n") ;
+    BIO_dump_indent_fp ( log , (const char *) Nb, NONCELEN, 4 );
+    fflush(log);
+
+    LenMsg4 = MSG4_new( log, &msg4, &Ks, &fNa2, &Nb) ;
     
     // Send MSG4  to  Amal
-    write( /* ... */ ) ;
-    write( /* ... */ );
+    if(    ( write( fd_B2A, &LenMsg4, LENSIZE) != LENSIZE ) 
+        || ( write( fd_B2A, msg4, LenMsg4 )     != LenMsg4 )    )
+    {
+        fprintf( log , "Unable to send all %lu bytes of of L(M4) || M4 from B to A"
+                       "... EXITING\n" , LENSIZE+LenMsg4 ) ;
+        
+        fflush( log ) ;  fclose( log ) ;      free( msg4 )   ;
+        exitError( "\nUnable to send MSG2 in KDC\n" );
+    }
  
     fprintf( log , "Basim Sent the above MSG4 to Amal on FD %d\n" , fd_B2A );
     fflush( log ) ;
-
-    //
-    // .....  Missing Code
-    //
+    
+    free (msg4);
                   
     //*************************************
     // Receive   & Process Message 5
@@ -124,17 +127,17 @@ int main ( int argc , char * argv[] )
     Nonce_t   fNb , fNbCpy;
 
     // Get MSG5 from Amal
-    MSG5_receive( /* ... */ ) ;
+    MSG5_receive( log, fd_A2B, &Ks, &fNbCpy ) ;
     
+    fprintf(log, "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
     fprintf( log , "\nBasim expecting back this fNb in MSG5:\n") ;
-    // Compute fNbCpy = f( Nb ) and dump it to log file
-    //
-    // .....  Missing Code
-    //
+    fNonce(fNb, Nb);
+    BIO_dump_indent_fp ( log , (const char *) fNb, NONCELEN, 4 );
+
                   
     fprintf( log , "Basim received Message 5 from Amal on FD %d with this f( Nb ) >>>> " , fd_A2B ) ;
     // Validate f( Nb ) 
-    if ( /* fNb is the same as fNbCpy   .. use memcmp() */ )
+    if ( memcmp(&fNb, &fNbCpy, NONCELEN) == 0 )
     {
         fprintf( log , "VALID\n" ) ;
     }
@@ -142,7 +145,7 @@ int main ( int argc , char * argv[] )
     {
         fprintf( log , "INVALID >>>> NOT Exiting\n" ) ;
     }
-    // Dump received fNb to log file
+    BIO_dump_indent_fp ( log , (const char *) fNbCpy, NONCELEN, 4 );
     fflush( log ) ;
 
 
@@ -150,6 +153,7 @@ int main ( int argc , char * argv[] )
     // Final Clean-Up
     //*************************************
 
+    fprintf(log, "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
     fprintf( log , "\nBasim has terminated normally. Goodbye\n" ) ;
     fclose( log ) ;  
 

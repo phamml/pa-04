@@ -82,6 +82,7 @@ int main ( int argc , char * argv[] )
     
     // Send MSG1 to KDC
     write( /* ... */ ) ;
+    write( /* ... */ ) ;
 
     fprintf( log , "Amal sent message 1 ( %d bytes ) to the KDC on FD %d with\n"
                    "    IDa ='%s' , IDb = '%s'\n" , LenMsg1 , fd_A2K , IDa , IDb ) ;
