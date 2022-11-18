@@ -765,6 +765,7 @@ void MSG3_receive( FILE *log , int fd , const myKey_t *Kb , myKey_t *Ks , char *
     //     I.3.1) Allocate buffer for the caller to hold IDA
     //     I.3.2)  Copy IDA to caller's buffer
     lenPtr = (unsigned *) p    ;   LenA  = *lenPtr    ;          p += LENSIZE ;
+    *IDa = malloc (LenA);
     memcpy( *IDa, p, LenA )  ; 
     p += LenA;
 

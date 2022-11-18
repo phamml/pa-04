@@ -17,13 +17,13 @@ Amal has this Master Ka { key , IV }
 The following new MSG1 ( 46 bytes ) has been created by MSG1_new ():
     0000 - 0f 00 00 00 4d 61 64 61-61 68 20 45 6c 2d 41 6d   ....Madaah El-Am
     0010 - 61 72 00 13 00 00 00 48-61 73 65 65 62 61 6b 20   ar.....Haseebak 
-    0020 - 4c 69 7a 2d 5a 61 6d 61-6e 00 20 eb f2 0d         Liz-Zaman. ...
+    0020 - 4c 69 7a 2d 5a 61 6d 61-6e 00 e8 bd fc bd         Liz-Zaman.....
 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 Amal sent message 1 ( 46 bytes ) to the KDC on FD 4 with
     IDa ='Madaah El-Amar' , IDb = 'Haseebak Liz-Zaman'
     Na ( 4 Bytes ) is
-    0000 - 20 eb f2 0d                                        ...
+    0000 - e8 bd fc bd                                       ....
 
 
 **************************
@@ -31,40 +31,40 @@ Amal sent message 1 ( 46 bytes ) to the KDC on FD 4 with
 **************************
 
 MSG2_receive() got the following Encrypted MSG2 ( 160 bytes ) from FD 5 Successfully
-    0000 - 31 bd df b5 f2 52 1a 52-9b 18 d4 46 41 f3 27 e4   1....R.R...FA.'.
-    0010 - 1a 02 a9 4b ab d4 94 b4-f6 5f 11 e6 f7 88 75 f5   ...K....._....u.
-    0020 - 58 b6 cc dd 8c 73 50 aa-d8 9e b3 34 eb 2b 92 58   X....sP....4.+.X
-    0030 - 40 40 30 c7 24 81 8f bc-65 47 7b 4b 42 dc 72 3d   @@0.$...eG{KB.r=
-    0040 - a7 a8 1d 26 ca 65 0b fc-49 da 05 18 d2 f7 68 64   ...&.e..I.....hd
-    0050 - 2b 80 d7 5f 08 39 03 8d-8e 49 f0 d7 9d 9d a2 c5   +.._.9...I......
-    0060 - 93 aa c5 af f3 d7 6c b6-74 c8 8c 96 cc e1 88 1f   ......l.t.......
-    0070 - 57 46 bc 9b 8f db ee d2-51 1f 8d 7f 4a bb a8 22   WF......Q...J.."
-    0080 - 57 cc 5d 7e df 7a da 13-06 5f b9 d7 78 9d 48 21   W.]~.z..._..x.H!
-    0090 - af 1d f2 3c 0b 71 cd 40-1b 4c 24 9b 95 fa ee 10   ...<.q.@.L$.....
+    0000 - 6b c7 b6 ad 42 bf 6b 11-40 89 be 09 d1 69 b7 bc   k...B.k.@....i..
+    0010 - b8 ef 8f 1d 02 68 31 9d-44 70 ae 4e 35 01 65 73   .....h1.Dp.N5.es
+    0020 - d1 6a 9c 45 79 fa a7 ba-23 f4 7a d1 d8 8a ba d0   .j.Ey...#.z.....
+    0030 - 6d 51 a7 2c 98 37 72 8b-a5 8b fe a7 0d d8 4b 63   mQ.,.7r.......Kc
+    0040 - dc 18 ac ff 25 21 26 86-8f 5d 8b 5e 76 6b 46 96   ....%!&..].^vkF.
+    0050 - 2e e0 70 a3 39 50 0d 8a-78 f3 2e a6 d0 5a 35 c5   ..p.9P..x....Z5.
+    0060 - ee 98 6f a0 c1 92 46 81-4e a1 e4 6b 16 e9 58 ec   ..o...F.N..k..X.
+    0070 - 3a 64 f0 94 f4 18 8a ae-a3 5f bf 01 2a 8c ee 7b   :d......._..*..{
+    0080 - 27 cb b8 8c 07 ed 11 c6-97 e1 7b a3 b6 ce 58 a7   '.........{...X.
+    0090 - 6c 88 c9 7f b2 cc 09 b7-51 8d 6b 6c 9c d9 c1 ef   l.......Q.kl....
 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 Amal received the following in MSG 2 from the KDC
     Ks { Key , IV } (48 Bytes ) is:
-    0000 - 3d 8f 35 08 0a ab 7f 62-99 7a ff f8 89 07 76 d2   =.5....b.z....v.
-    0010 - bb 10 13 a6 f7 57 1d de-0b 2e de 82 0c c6 6e 14   .....W........n.
-    0020 - b8 e1 ce 77 f2 0f 60 9a-6c 9e 84 e9 a3 a2 46 ab   ...w..`.l.....F.
+    0000 - d9 04 3b f5 8e 56 aa 6f-c8 52 ca 26 06 b2 97 6f   ..;..V.o.R.&...o
+    0010 - 4b b4 56 06 a3 fd 31 da-a7 a8 2a c9 62 b1 c5 37   K.V...1...*.b..7
+    0020 - 53 de 37 49 e4 1f 17 d7-62 dc 97 06 b6 dc 02 9b   S.7I....b.......
 
     IDb (19 Bytes):   ..... MATCH
     0000 - 48 61 73 65 65 62 61 6b-20 4c 69 7a 2d 5a 61 6d   Haseebak Liz-Zam
     0010 - 61 6e 00                                          an.
 
     Received Copy of Na (4 bytes):    >>>> VALID
-    0000 - 20 eb f2 0d                                        ...
+    0000 - e8 bd fc bd                                       ....
 
     Encrypted Ticket (80 bytes):
-    0000 - 2f c7 0a 05 92 9e d0 f1-d4 0c 8e 24 5e 3d 86 b7   /..........$^=..
-    0010 - 1c fc d2 7b ff 8a 1b d4-8c 0b 6a 86 d0 81 eb 33   ...{......j....3
-    0020 - 93 5f 7f 74 fd a2 ec 5b-b7 9a 4a 10 d3 ae a5 50   ._.t...[..J....P
-    0030 - c9 b2 79 4a ff 45 54 12-4a 35 11 28 31 ba ca 85   ..yJ.ET.J5.(1...
-    0040 - 89 48 31 5f d7 2d e8 6f-a5 76 43 94 e5 42 d4 6a   .H1_.-.o.vC..B.j
+    0000 - 93 ba 86 01 f0 99 12 13-c2 9e ff 50 71 39 99 20   ...........Pq9. 
+    0010 - 5d 95 d6 4e 1c d0 71 25-77 59 5f 3e 78 fc 6f 92   ]..N..q%wY_>x.o.
+    0020 - e2 2d 9a e6 94 cd 0e 07-49 08 40 d1 58 d2 7c a1   .-......I.@.X.|.
+    0030 - 39 26 97 33 15 c5 d8 f5-98 a6 e6 f9 35 bc 03 6d   9&.3........5..m
+    0040 - bd 11 33 39 fd 15 d1 56-87 2c 37 0d 50 a1 36 93   ..39...V.,7.P.6.
 
 Amal Created this nonce Na2 for MSG3:
-    0000 - 70 88 d0 43                                       p..C
+    0000 - 77 b2 0a 0f                                       w...
 
 
 **************************
@@ -72,12 +72,12 @@ Amal Created this nonce Na2 for MSG3:
 **************************
 
 The following new MSG3 ( 88 bytes ) has been created by MSG3_new ():
-    0000 - 50 00 00 00 2f c7 0a 05-92 9e d0 f1 d4 0c 8e 24   P.../..........$
-    0010 - 5e 3d 86 b7 1c fc d2 7b-ff 8a 1b d4 8c 0b 6a 86   ^=.....{......j.
-    0020 - d0 81 eb 33 93 5f 7f 74-fd a2 ec 5b b7 9a 4a 10   ...3._.t...[..J.
-    0030 - d3 ae a5 50 c9 b2 79 4a-ff 45 54 12 4a 35 11 28   ...P..yJ.ET.J5.(
-    0040 - 31 ba ca 85 89 48 31 5f-d7 2d e8 6f a5 76 43 94   1....H1_.-.o.vC.
-    0050 - e5 42 d4 6a 70 88 d0 43-                          .B.jp..C
+    0000 - 50 00 00 00 93 ba 86 01-f0 99 12 13 c2 9e ff 50   P..............P
+    0010 - 71 39 99 20 5d 95 d6 4e-1c d0 71 25 77 59 5f 3e   q9. ]..N..q%wY_>
+    0020 - 78 fc 6f 92 e2 2d 9a e6-94 cd 0e 07 49 08 40 d1   x.o..-......I.@.
+    0030 - 58 d2 7c a1 39 26 97 33-15 c5 d8 f5 98 a6 e6 f9   X.|.9&.3........
+    0040 - 35 bc 03 6d bd 11 33 39-fd 15 d1 56 87 2c 37 0d   5..m..39...V.,7.
+    0050 - 50 a1 36 93 77 b2 0a 0f-                          P.6.w...
 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 Amal Sent MSG3 ( 88 bytes ) to Basim on FD 8:
@@ -88,22 +88,22 @@ Amal Sent MSG3 ( 88 bytes ) to Basim on FD 8:
 
 
 The following Encrypted MSG4 ( 16 bytes ) was received from FD 9 :
-    0000 - 6e 0e d6 63 1c 9c 1d 56-79 a0 e6 4f 73 ed df d8   n..c...Vy..Os...
+    0000 - fc b0 01 d5 b6 02 a8 90-fa 0f a7 56 63 6b f0 78   ...........Vck.x
 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 Amal is expecting back this f( Na2 ) in MSG4:
-    0000 - 70 88 d0 44                                       p..D
+    0000 - 77 b2 0a 10                                       w...
 
 Basim returned the following f( Na2 )   >>>> VALID
-    0000 - 70 88 d0 44                                       p..D
+    0000 - 77 b2 0a 10                                       w...
 
 Amal also received this Nb :
-    0000 - 38 c1 8b 47                                       8..G
+    0000 - 02 b8 dc 50                                       ...P
 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 Amal computed this F(Nb) for MSG5:
-    0000 - 38 c1 8b 48                                       8..H
+    0000 - 02 b8 dc 51                                       ...Q
 
 
 **************************
@@ -111,7 +111,7 @@ Amal computed this F(Nb) for MSG5:
 **************************
 
 The following new Encrypted MSG5 ( 16 bytes ) has been created by MSG5_new ():  
-    0000 - 06 55 d5 e0 36 8d fc c1-19 c3 e8 62 61 b1 b4 31   .U..6......ba..1
+    0000 - a5 33 32 28 91 b1 0a cd-f2 e6 59 87 8e b5 19 d9   .32(......Y.....
 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 Amal Sending the above Message 5 ( 16 bytes ) to Basim on FD 8
