@@ -6,7 +6,7 @@ FILE:   basim.c         SKELETON
 Written By: 
      1- Mia Pham
      2- Emily Graff
-Submitted on: 
+Submitted on: 12-01-2022
 ----------------------------------------------------------------------------*/
 
 #include <linux/random.h>
@@ -106,8 +106,8 @@ int main ( int argc , char * argv[] )
     LenMsg4 = MSG4_new( log, &msg4, &Ks, &fNa2, &Nb) ;
     
     // Send MSG4  to  Amal
-    if(    ( write( fd_B2A, &LenMsg4, LENSIZE) != LENSIZE ) 
-        || ( write( fd_B2A, msg4, LenMsg4 )     != LenMsg4 )    )
+    if(( write( fd_B2A, &LenMsg4, LENSIZE) != LENSIZE ) 
+        || ( write( fd_B2A, msg4, LenMsg4 ) != LenMsg4 ))
     {
         fprintf( log , "Unable to send all %lu bytes of of L(M4) || M4 from B to A"
                        "... EXITING\n" , LENSIZE+LenMsg4 ) ;

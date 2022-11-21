@@ -6,7 +6,7 @@ FILE:   myCrypto.c         SKELETON
 Written By: 
      1- Mia Pham
      2- Emily Graff
-Submitted on: 
+Submitted on: 12-01-2022
 ----------------------------------------------------------------------------*/
 
 #include "myCrypto.h"
@@ -674,7 +674,7 @@ unsigned MSG3_new( FILE *log , uint8_t **msg3 , const unsigned lenTktCipher , co
         fprintf( log , "Out of Memory allocating %u bytes for MSG3"
                        " in MSG3_new ... EXITING\n" , LenMsg3 );       
         fflush( log ) ;  fclose( log ) ;     
-        exitError( "\nOut of Memory allocating for IDa of MSG3 in MSG3_new\n" );
+        exitError( "\nOut of Memory allocating for MSG3 in MSG3_new\n" );
     }
 
     // Fill in Msg3:  Len( TktCipher )  ||  TktCipher   ||  Na2
@@ -766,6 +766,13 @@ void MSG3_receive( FILE *log , int fd , const myKey_t *Kb , myKey_t *Ks , char *
     //     I.3.2)  Copy IDA to caller's buffer
     lenPtr = (unsigned *) p    ;   LenA  = *lenPtr    ;          p += LENSIZE ;
     *IDa = malloc (LenA);
+    if (*IDa == NULL)
+    {
+        fprintf( log , "Out of Memory allocating %u bytes for IDa"
+                       " in MSG3_recieve ... EXITING\n" , LenMsg3 );       
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nOut of Memory allocating for IDa of MSG3 in MSG3_recieve\n" );   
+    }
     memcpy( *IDa, p, LenA )  ; 
     p += LenA;
 
@@ -940,6 +947,13 @@ unsigned MSG5_new( FILE *log , uint8_t **msg5, const myKey_t *Ks ,  Nonce_t *fNb
     unsigned LenMSG5cipher = encrypt (plaintext, msg5PlainLen, Ks->key, Ks->iv, ciphertext);
     // Now allocate a LenMSG5cipher for the caller, and copy the encrypted MSG5 to it
     *msg5 = malloc(LenMSG5cipher);
+    if (*msg5 == NULL)
+    {
+        fprintf( log , "Out of Memory allocating %u bytes for MSG5"
+                       " in MSG5_new ... EXITING\n" , LenMsg3 );       
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nOut of Memory allocating for MSG5 in MSG5_new\n" );
+    }
     memcpy(*msg5, ciphertext, LenMSG5cipher);
  
     fprintf( log , "The following new Encrypted MSG5 ( %u bytes ) has been"
