@@ -1,11 +1,12 @@
 /*----------------------------------------------------------------------------
 PA-04:  Enhanced Needham-Schroeder Key-Exchange with TWO-way Authentication
 
-FILE:   kdc.c          SKELETON  
+FILE:   kdc.c            
 
 Written By: 
-     1-  M U S T      T Y P E     Y O U R     N A M E(s) 
-Submitted on: 
+    1 - Emily Graff
+    2 - Mia Pham
+Submitted on: 11.26.22
 ----------------------------------------------------------------------------*/
 
 #include <linux/random.h>
@@ -22,7 +23,7 @@ int main ( int argc , char * argv[] )
     int       fd_A2K , fd_K2A   ;
     FILE     *log ;
     
-    char *developerName = "Code by <<YOUR FULL NAMEs IN UPPERCASE>>" ;
+    char *developerName = "Code by <<EMILY GRAFF>>" ;
     printf ( "\nThis is the KDC's %s\n"  , developerName ) ;
     if( argc < 3 )
     {
@@ -30,8 +31,8 @@ int main ( int argc , char * argv[] )
                "<sendTo Amal>\n\n", argv[0]) ;
         exit(-1) ;
     }
-    fd_A2K    = .....  ;  // Read from Amal   File Descriptor
-    fd_K2A    = .....  ;  // Send to   Amal   File Descriptor
+    fd_A2K    = atoi(argv[1])  ;  // Read from Amal   File Descriptor
+    fd_K2A    = atoi(argv[2])  ;  // Send to   Amal   File Descriptor
 
     log = fopen("kdc/logKDC.txt" , "w" );
     if( ! log )
@@ -49,7 +50,7 @@ int main ( int argc , char * argv[] )
     myKey_t  Ka ,    // Amal's master key with the KDC
              Kb ;    // Basim's master key with the KDC
 
-    if ( ! getMasterKeyFromFiles( /* ... */ ) )
+    if ( ! getMasterKeyFromFiles( "./kdc/amalKey.bin", "./kdc/amalIV.bin", &Ka ) )
     { 
         fprintf( stderr , "\nCould not open Amal's Masker key files\n"); 
         fprintf( log , "\nCould not open Amal's Masker key files\n"); 
@@ -57,12 +58,12 @@ int main ( int argc , char * argv[] )
     }
     fprintf( log , "\nAmal has this Master Ka { key , IV }\n"  ) ;
  
-    //
-    // .....  Missing Code
-    //
+    BIO_dump_indent_fp (log, (const char *) Ka.key, SYMMETRIC_KEY_LEN, 4);
+    fprintf( log , "\n" );
+    BIO_dump_indent_fp (log, (const char *) Ka.iv, INITVECTOR_LEN, 4);
 
     // Get Basim's master keys with the KDC
-    if( ! getMasterKeyFromFiles( /* ... */ ) )
+    if( ! getMasterKeyFromFiles( "./kdc/basimKey.bin", "./kdc/basimIV.bin", &Kb ) )
     { 
         fprintf( stderr , "\nCould not open Basim's Masker key files\n"); 
         fprintf( log , "\nCould not open Basim's Masker key files\n"); 
@@ -70,9 +71,9 @@ int main ( int argc , char * argv[] )
     }
     fprintf( log , "Basim has this Master Kb { key , IV }\n"  ) ;
  
-    //
-    // .....  Missing Code
-    //
+    BIO_dump_indent_fp (log, (const char *) Kb.key, SYMMETRIC_KEY_LEN, 4);
+    fprintf( log , "\n" );
+    BIO_dump_indent_fp (log, (const char *) Kb.iv, INITVECTOR_LEN, 4);
 
     fflush( log ) ;
 
@@ -99,21 +100,20 @@ int main ( int argc , char * argv[] )
 
     // Generate a new Random Session Key  { encryption key , IV }   
  
-    //
-    // .....  Missing Code
-    //
+    RAND_bytes (Ks.key, SYMMETRIC_KEY_LEN);
+    RAND_bytes (Ks.iv, INITVECTOR_LEN);
    
     uint8_t *msg2 ;
     unsigned LenMsg2 ;
     
     // Create MSG2
-    LenMsg2 = MSG2_new( /* ... */ ) ;
+    LenMsg2 = MSG2_new( log , &msg2 , &Ka , &Kb , &Ks , IDa , IDb , &Na ) ;
     
     free( IDa ) ;   free( IDb );  // These were allocated by MSG1_receive()
 
     // Send MSG2 to Amal
     // First, send Len( MSG1 )
-    if( ( write( /* .. */  ) != /* .. */ ) )
+    if( write( fd_K2A , msg2 , sizeof( LenMsg2 ) ) != sizeof( LenMsg2 ) )
     {
         fprintf( log , "Unable to send all %lu bytes of of Len( MSG2 ) in KDC"
                        "... EXITING\n" , sizeof( LenMsg2 ) ) ;
@@ -123,7 +123,7 @@ int main ( int argc , char * argv[] )
     }
 
     // Next, send body of MSG1 
-    if( ( write( /* .. */ ) != /* ... */  ) )
+    if(   write( fd_K2A , msg2 , LenMsg2 )     != LenMsg2  )
     {
         fprintf( log , "Unable to send all %u bytes of of MSG2 in KDC"
                        "... EXITING\n" , LenMsg2 ) ;
