@@ -113,7 +113,7 @@ int main ( int argc , char * argv[] )
 
     // Send MSG2 to Amal
     // First, send Len( MSG1 )
-    if( write( fd_K2A , msg2 , sizeof( LenMsg2 ) ) != sizeof( LenMsg2 ) )
+    if( write( fd_K2A , &LenMsg2 , LENSIZE ) != LENSIZE)
     {
         fprintf( log , "Unable to send all %lu bytes of of Len( MSG2 ) in KDC"
                        "... EXITING\n" , sizeof( LenMsg2 ) ) ;

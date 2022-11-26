@@ -1,0 +1,27 @@
+
+This is Amal's REFERENCE Code By:  <<ABOUTABL>>.
+
+<readFr. KDC> FD=5 , <sendTo KDC> FD=4 , <readFr. Basim> FD=9 , <sendTo Basim> FD=8
+
+Amal has this Master Ka { key , IV }
+    0000 - 95 de 35 97 11 0c 6a e0-81 3c 06 ea 78 2f 22 7b   ..5...j..<..x/"{
+    0010 - bb 1d 3d 68 74 d7 4f a9-d9 5a 6d 87 9a 9a f4 1f   ..=ht.O..Zm.....
+
+    0000 - cd ec 0e 9b b3 bc 6f 27-79 af c7 af d4 4c 36 b8   ......o'y....L6.
+
+
+**************************
+         MSG1 New
+**************************
+
+The following new MSG1 ( 46 bytes ) has been created by MSG1_new ():
+    0000 - 0f 00 00 00 4d 61 64 61-61 68 20 45 6c 2d 41 6d   ....Madaah El-Am
+    0010 - 61 72 00 13 00 00 00 48-61 73 65 65 62 61 6b 20   ar.....Haseebak 
+    0020 - 4c 69 7a 2d 5a 61 6d 61-6e 00 7c ef b5 f0         Liz-Zaman.|...
+
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+Amal sent message 1 ( 46 bytes ) to the KDC on FD 4 with
+    IDa ='Madaah El-Amar' , IDb = 'Haseebak Liz-Zaman'
+    Na ( 4 Bytes ) is
+    0000 - 7c ef b5 f0                                       |...
+

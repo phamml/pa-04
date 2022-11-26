@@ -567,18 +567,14 @@ void  MSG1_receive( FILE *log , int fd , char **IDa , char **IDb , Nonce_t *Na )
     unsigned LenMsg1 , LenA , LenB ;
 
     // Read Len(Message 1)  
-    if ( read( fd , &LenMsg1 , LENSIZE  ) !=  LENSIZE  )
-    {
-        fprintf( log , "Unable to read all %lu bytes of Len(MSG1) from FD %d in "
-                       "MSG1_receive() ... EXITING\n" , LENSIZE , fd );
+    // if ( read( fd , &LenMsg1 , LENSIZE  ) !=  LENSIZE  )
+    // {
+    //     fprintf( log , "Unable to read all %lu bytes of Len(MSG1) from FD %d in "
+    //                    "MSG1_receive() ... EXITING\n" , LENSIZE , fd );
         
-        fflush( log ) ;  fclose( log ) ;    
-        exitError( "" );
-    }
-
-    // For testing
-    fprintf( log , "MSG1 ( %u bytes ) has been received"
-                   " on FD %d by MSG1_receive():\n" ,  LenMsg1 , fd  ) ;   
+    //     fflush( log ) ;  fclose( log ) ;    
+    //     exitError( "" );
+    // }
    
     // Read in the components of Msg1:  L(A)  ||  A   ||  L(B)  ||  B   ||  Na
     // 1) Read Len(IDa)  
@@ -590,10 +586,6 @@ void  MSG1_receive( FILE *log , int fd , char **IDa , char **IDb , Nonce_t *Na )
         fflush( log ) ;  fclose( log ) ;    
         exitError( "" );
     }
-
-    // For testing
-    fprintf( log , "Len(IDa) ( %lu bytes ) has been received"
-                   " on FD %d by MSG1_receive(): LenA = %u\n" ,  LENSIZE , fd  , LenA) ; 
 
     // 2) Allocate memory for, and Read IDa
     *IDa = malloc (LenA);
@@ -652,6 +644,10 @@ void  MSG1_receive( FILE *log , int fd , char **IDa , char **IDb , Nonce_t *Na )
         fflush( log ) ;  fclose( log ) ;    
         exitError( "" );
     }
+
+    // Computed LenMsg1 instead of reading from fd bc Aboutabl code never sends the LenMsg1
+    LenMsg1 = LENSIZE + LenA + LENSIZE + LenB + NONCELEN;
+
     fprintf( log , "MSG1 ( %u bytes ) has been received"
                    " on FD %d by MSG1_receive():\n" ,  LenMsg1 , fd  ) ;   
     fflush( log ) ;
