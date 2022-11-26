@@ -1,17 +1,22 @@
 
-This is the KDC's REFERENCE Code by <<ABOUTABL>>
-
-<readFr. Amal> FD=3 , <sendTo Amal> FD=6
+This is the KDC's Code by <<EMILY GRAFF>>
+	<readFr. Amal> FD=3 , <sendTo Amal> FD=6
 
 Amal has this Master Ka { key , IV }
     0000 - 95 de 35 97 11 0c 6a e0-81 3c 06 ea 78 2f 22 7b   ..5...j..<..x/"{
     0010 - bb 1d 3d 68 74 d7 4f a9-d9 5a 6d 87 9a 9a f4 1f   ..=ht.O..Zm.....
 
     0000 - cd ec 0e 9b b3 bc 6f 27-79 af c7 af d4 4c 36 b8   ......o'y....L6.
-
 Basim has this Master Kb { key , IV }
     0000 - eb 98 11 c5 00 2c a9 ae-6f 5a f2 4e b8 da 71 26   .....,..oZ.N..q&
     0010 - cd 73 7c e4 b4 9d 72 d7-d9 ab ce ea b5 2e a3 47   .s|...r........G
 
     0000 - bb 55 bf b0 0b e3 9f fc-c6 44 38 50 be 58 79 48   .U.......D8P.XyH
 
+**************************
+         MSG1 Receive
+**************************
+
+MSG1 ( 15 bytes ) has been received on FD 3 by MSG1_receive():
+Len(IDa) ( 4 bytes ) has been received on FD 3 by MSG1_receive(): LenA = 1633968461
+Unable to read all 1633968461 bytes of IDa from FD 3 in MSG1_receive() ... EXITING

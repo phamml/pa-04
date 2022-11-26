@@ -564,7 +564,6 @@ void  MSG1_receive( FILE *log , int fd , char **IDa , char **IDb , Nonce_t *Na )
         exitError( "NULL pointer(s) passed to MSG1_receive()" );
     }
 
-
     unsigned LenMsg1 , LenA , LenB ;
 
     // Read Len(Message 1)  
@@ -576,6 +575,10 @@ void  MSG1_receive( FILE *log , int fd , char **IDa , char **IDb , Nonce_t *Na )
         fflush( log ) ;  fclose( log ) ;    
         exitError( "" );
     }
+
+    // For testing
+    fprintf( log , "MSG1 ( %u bytes ) has been received"
+                   " on FD %d by MSG1_receive():\n" ,  LenMsg1 , fd  ) ;   
    
     // Read in the components of Msg1:  L(A)  ||  A   ||  L(B)  ||  B   ||  Na
     // 1) Read Len(IDa)  
@@ -588,6 +591,10 @@ void  MSG1_receive( FILE *log , int fd , char **IDa , char **IDb , Nonce_t *Na )
         exitError( "" );
     }
 
+    // For testing
+    fprintf( log , "Len(IDa) ( %lu bytes ) has been received"
+                   " on FD %d by MSG1_receive(): LenA = %u\n" ,  LENSIZE , fd  , LenA) ; 
+
     // 2) Allocate memory for, and Read IDa
     *IDa = malloc (LenA);
     if( *IDa == NULL ) 
@@ -598,11 +605,20 @@ void  MSG1_receive( FILE *log , int fd , char **IDa , char **IDb , Nonce_t *Na )
         exitError( "\nOut of Memory allocating for IDa of MSG1 in MSG1_receive\n" );
     }
 
-    // 3) Read Len(IDb)
     if ( read( fd , *IDa , LenA  ) !=  LenA  )
     {
         fprintf( log , "Unable to read all %u bytes of IDa from FD %d in "
                        "MSG1_receive() ... EXITING\n" , LenA , fd );
+        
+        fflush( log ) ;  fclose( log ) ;    
+        exitError( "" );
+    }
+
+    // 3) Read Len(IDb)
+    if ( read( fd , &LenB , LENSIZE  ) !=  LENSIZE  )
+    {
+        fprintf( log , "Unable to read all %lu bytes of Len(IDb) from FD %d in "
+                       "MSG1_receive() ... EXITING\n" , LENSIZE , fd );
         
         fflush( log ) ;  fclose( log ) ;    
         exitError( "" );
@@ -769,7 +785,7 @@ void MSG3_receive( FILE *log , int fd , const myKey_t *Kb , myKey_t *Ks , char *
     if (*IDa == NULL)
     {
         fprintf( log , "Out of Memory allocating %u bytes for IDa"
-                       " in MSG3_recieve ... EXITING\n" , LenMsg3 );       
+                       " in MSG3_recieve ... EXITING\n" , LenA );       
         fflush( log ) ;  fclose( log ) ;     
         exitError( "\nOut of Memory allocating for IDa of MSG3 in MSG3_recieve\n" );   
     }
@@ -950,7 +966,7 @@ unsigned MSG5_new( FILE *log , uint8_t **msg5, const myKey_t *Ks ,  Nonce_t *fNb
     if (*msg5 == NULL)
     {
         fprintf( log , "Out of Memory allocating %u bytes for MSG5"
-                       " in MSG5_new ... EXITING\n" , LenMsg3 );       
+                       " in MSG5_new ... EXITING\n" , LenMSG5cipher );       
         fflush( log ) ;  fclose( log ) ;     
         exitError( "\nOut of Memory allocating for MSG5 in MSG5_new\n" );
     }
