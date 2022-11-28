@@ -355,14 +355,10 @@ unsigned MSG2_new( FILE *log , uint8_t **msg2, const myKey_t *Ka , const myKey_t
     // Fill in Msg2 Plaintext:  Ks || L(IDb) || IDb  || Na || lenTktCipher || TktCipher
 
     // Reuse the moving pointer 'p' , but now to contsruct plaintext of MSG2
-    fprintf( log ,"This is the new MSG2 ( %u Bytes ) before Encryption:\n" , lenMsg2Plain);
     p = plaintext ;    
 
     //  ... some code ..... Copying Ks into plaintext buffer
     memcpy( p , Ks , KEYSIZE ) ;                        
-
-    fprintf( log ,"    Ks { key + IV } (%lu Bytes) is:\n" , KEYSIZE );
-    BIO_dump_indent_fp ( log , p , KEYSIZE , 4 ) ;  fprintf( log , "\n") ; 
 
     //  ... some code ..... Copying L(IDb) and IDb into plaintext buffer
     p += KEYSIZE ; 
@@ -370,24 +366,15 @@ unsigned MSG2_new( FILE *log , uint8_t **msg2, const myKey_t *Ka , const myKey_t
     p += LENSIZE ;
     memcpy( p , IDb , LenB );
 
-    fprintf( log ,"    IDb (%u Bytes) is:\n" , LenB );
-    BIO_dump_indent_fp ( log , p , LenB , 4 ) ;  fprintf( log , "\n") ; 
-
     //  ... some code ..... Copying Na into the plaintext buffer
     p += LenB ;
     memcpy( p , Na , NONCELEN ) ;                         
-
-    fprintf( log ,"    Na (%lu Bytes) is:\n" , NONCELEN );
-    BIO_dump_indent_fp ( log , p , NONCELEN , 4 ) ;  fprintf( log , "\n") ; 
 
     //  ... some code .....  Copying lenTktCipher and TktCipher into the plaintext buffer
     p += NONCELEN;
     lenPtr = (unsigned *) p  ;   *lenPtr = lenTktCipher ;       
     p += LENSIZE ;
     memcpy( p , TktCipher , lenTktCipher );
-
-    fprintf( log ,"    Encrypted Ticket (%u Bytes) is\n" , lenTktCipher );
-    BIO_dump_indent_fp ( log , p , lenTktCipher , 4 ) ;  fprintf( log , "\n") ; 
    
     // Now, encrypt Message 2 using Ka
     unsigned LenMsg2 = encrypt( plaintext , lenMsg2Plain, Ka->key, Ka->iv, ciphertext ) ;
@@ -408,6 +395,21 @@ unsigned MSG2_new( FILE *log , uint8_t **msg2, const myKey_t *Ka , const myKey_t
                    " created by MSG2_new():  \n" , LenMsg2 ) ;
     BIO_dump_indent_fp( log , *msg2 , LenMsg2 , 4 ) ;    fprintf( log , "\n" ) ;    
     fflush( log ) ;    
+
+    fprintf( log ,"This is the new MSG2 ( %u Bytes ) before Encryption:\n" , lenMsg2Plain);
+
+    fprintf( log ,"    Ks { key + IV } (%lu Bytes) is:\n" , KEYSIZE );
+    BIO_dump_indent_fp ( log , (const char *) Ks, sizeof( myKey_t ) , 4 ) ;  fprintf( log , "\n") ; 
+
+    fprintf( log ,"    IDb (%u Bytes) is:\n" , LenB );
+    BIO_dump_indent_fp ( log , IDb , LenB , 4 ) ;  fprintf( log , "\n") ; 
+
+    fprintf( log ,"    Na (%lu Bytes) is:\n" , NONCELEN );
+    BIO_dump_indent_fp ( log , (const char *) Na , NONCELEN , 4 ) ;  fprintf( log , "\n") ; 
+
+    fprintf( log ,"    Encrypted Ticket (%u Bytes) is\n" , lenTktCipher );
+    BIO_dump_indent_fp ( log , TktCipher, lenTktCipher , 4 ) ;  fprintf( log , "\n") ; 
+
 
     return LenMsg2 ;    
 

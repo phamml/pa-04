@@ -23,7 +23,7 @@ MSG1 ( 46 bytes ) has been received on FD 3 by MSG1_receive():
 KDC received message 1 from Amal on FD 3 with
     IDa ='Madaah El-Amar' , IDb = 'Haseebak Liz-Zaman'
     Na ( 4 Bytes ) is
-    0000 - 5d 72 34 a0                                       ]r4.
+    0000 - d9 9a 58 70                                       ..Xp
 
 
 **************************
@@ -31,43 +31,43 @@ KDC received message 1 from Amal on FD 3 with
 **************************
 
     Plaintext Ticket (67 Bytes) is
-    0000 - 07 36 2a 84 2e aa ce d6-da 5e a1 fe 43 46 e1 d4   .6*......^..CF..
-    0010 - 08 95 88 d6 4b e0 60 29-da 18 94 ad 89 41 3f e1   ....K.`).....A?.
-    0020 - 7f 0d bb 9f d9 62 a7 a1-1c 9b db 16 9d 4f 2f 5d   .....b.......O/]
+    0000 - 9f 6e b9 fc 63 38 92 e2-0a 24 60 e8 02 f0 fb 37   .n..c8...$`....7
+    0010 - 2f 7d ee 03 8e 2e d1 e4-9f aa d3 62 55 de 2c b4   /}.........bU.,.
+    0020 - 03 28 97 b6 9c 66 d0 0e-3d aa 3a 03 36 c2 7d 31   .(...f..=.:.6.}1
     0030 - 0f 00 00 00 4d 61 64 61-61 68 20 45 6c 2d 41 6d   ....Madaah El-Am
     0040 - 61 72 00                                          ar.
 
+The following new Encrypted MSG2 ( 160 bytes ) has been created by MSG2_new():  
+    0000 - 20 26 ea 9e 7b 17 c3 7e-c3 26 0d f1 c1 c5 5f 40    &..{..~.&...._@
+    0010 - f8 fa d1 5f b0 ce 02 e2-74 18 d1 d9 51 18 82 57   ..._....t...Q..W
+    0020 - 6a 1d 5d 2f 2e 66 5a c4-b8 d5 78 7b 6c e4 f4 6b   j.]/.fZ...x{l..k
+    0030 - ce 47 4e 95 50 86 da e1-53 36 88 e1 56 02 f3 dc   .GN.P...S6..V...
+    0040 - 1c fe ef 82 8c a4 e3 aa-72 9f 4a e5 9f 5f b7 83   ........r.J.._..
+    0050 - 66 16 a7 2b 5a 06 92 07-ba 94 d5 d3 e0 2b 36 38   f..+Z........+68
+    0060 - 3a af 2e cf e2 7a 48 ac-c3 d9 f1 ca ae 60 cc ae   :....zH......`..
+    0070 - 7e 93 9d 58 24 b1 ca d8-fb 65 6a 90 b3 c1 eb b4   ~..X$....ej.....
+    0080 - 87 24 71 fc 19 34 47 d8-80 0f eb ce d1 41 d8 6a   .$q..4G......A.j
+    0090 - 90 50 4f 81 e7 0c 72 6b-1a 3c c0 07 d7 51 36 d1   .PO...rk.<...Q6.
+
 This is the new MSG2 ( 159 Bytes ) before Encryption:
     Ks { key + IV } (48 Bytes) is:
-    0000 - 07 36 2a 84 2e aa ce d6-da 5e a1 fe 43 46 e1 d4   .6*......^..CF..
-    0010 - 08 95 88 d6 4b e0 60 29-da 18 94 ad 89 41 3f e1   ....K.`).....A?.
-    0020 - 7f 0d bb 9f d9 62 a7 a1-1c 9b db 16 9d 4f 2f 5d   .....b.......O/]
+    0000 - 9f 6e b9 fc 63 38 92 e2-0a 24 60 e8 02 f0 fb 37   .n..c8...$`....7
+    0010 - 2f 7d ee 03 8e 2e d1 e4-9f aa d3 62 55 de 2c b4   /}.........bU.,.
+    0020 - 03 28 97 b6 9c 66 d0 0e-3d aa 3a 03 36 c2 7d 31   .(...f..=.:.6.}1
 
     IDb (19 Bytes) is:
     0000 - 48 61 73 65 65 62 61 6b-20 4c 69 7a 2d 5a 61 6d   Haseebak Liz-Zam
     0010 - 61 6e 00                                          an.
 
     Na (4 Bytes) is:
-    0000 - 5d 72 34 a0                                       ]r4.
+    0000 - d9 9a 58 70                                       ..Xp
 
     Encrypted Ticket (80 Bytes) is
-    0000 - 50 57 50 d3 c1 74 04 4e-57 b3 26 04 cb e4 36 b8   PWP..t.NW.&...6.
-    0010 - 94 39 ad 7f bb af e0 35-8c 25 cb a9 bf d3 4e a5   .9.....5.%....N.
-    0020 - 26 c9 f5 27 b6 1b 90 8a-3b 7b 6d fc a1 5c 22 09   &..'....;{m..\".
-    0030 - 4c 8d 3c 77 78 42 da 2b-a0 e1 af ee 14 68 bb 8c   L.<wxB.+.....h..
-    0040 - d5 72 b0 25 7b 6d 84 6d-5a b2 34 56 8a 94 dd 7e   .r.%{m.mZ.4V...~
-
-The following new Encrypted MSG2 ( 160 bytes ) has been created by MSG2_new():  
-    0000 - a0 03 6d 43 c7 0a cf c6-1c 4a 11 f9 7a 4f 27 50   ..mC.....J..zO'P
-    0010 - 49 ec 55 2d 5d e9 6a c3-8f 44 24 ce 5b 47 6f 33   I.U-].j..D$.[Go3
-    0020 - 64 9b 0f 03 74 49 b6 96-0a 03 c9 3f e3 67 c2 6a   d...tI.....?.g.j
-    0030 - 7f 07 c1 4a ac 84 34 d0-07 95 1f 92 87 81 f0 b9   ...J..4.........
-    0040 - 37 16 b3 2f c7 79 28 3e-78 eb 6a 8d 43 d7 80 78   7../.y(>x.j.C..x
-    0050 - f4 69 83 8a 36 7b 04 98-fb af 18 94 a5 04 01 00   .i..6{..........
-    0060 - da 94 81 e7 10 aa 52 1b-64 63 e0 ba 96 f3 5b 84   ......R.dc....[.
-    0070 - a4 7c 37 f2 19 a5 6f 28-01 14 95 f5 04 34 be c3   .|7...o(.....4..
-    0080 - c4 3e 11 09 9d 35 45 62-ef 44 00 8c 83 62 5b 6e   .>...5Eb.D...b[n
-    0090 - af df b3 22 05 26 1e 84-6a 93 ad fe f3 3c 1d ca   ...".&..j....<..
+    0000 - 91 89 b3 66 11 c5 f0 92-23 45 09 e0 9f 18 16 ac   ...f....#E......
+    0010 - 43 8f f4 ac 35 37 2f 09-9a 79 49 d0 19 b2 89 f1   C...57/..yI.....
+    0020 - 0a 94 43 55 39 16 f8 72-25 55 7d f1 0b 3f bb 19   ..CU9..r%U}..?..
+    0030 - 3d d7 86 5c bf c8 99 3a-fb 71 15 27 1d cb 8e 85   =..\...:.q.'....
+    0040 - 8b 6f 53 dd c6 59 b7 3a-fe 75 9b 2b 8c 72 d3 74   .oS..Y.:.u.+.r.t
 
 The KDC sent the above Encrypted MSG2 ( 160 bytes ) via FD=6 Successfully
 
