@@ -15,37 +15,37 @@ Basim has this Master Kb { key , IV }
 **************************
 
 The following Encrypted TktCipher ( 80 bytes ) was received via FD 7 by MSG3_receive()
-    0000 - 3b 92 25 7a 73 60 4a d9-92 02 83 9f b4 47 d5 90   ;.%zs`J......G..
-    0010 - c8 23 21 07 54 f0 60 81-23 2d 61 f7 85 23 29 e8   .#!.T.`.#-a..#).
-    0020 - 61 cc 40 90 3c 15 d9 c1-22 28 6e 0f 24 dc 71 2d   a.@.<..."(n.$.q-
-    0030 - eb 59 5d 04 2f 38 e2 11-a6 df 8a fd 03 9b 8c 36   .Y]./8.........6
-    0040 - 22 cf 24 d3 7f c0 fb 06-bc 51 23 43 f3 4c 99 00   ".$......Q#C.L..
+    0000 - 50 57 50 d3 c1 74 04 4e-57 b3 26 04 cb e4 36 b8   PWP..t.NW.&...6.
+    0010 - 94 39 ad 7f bb af e0 35-8c 25 cb a9 bf d3 4e a5   .9.....5.%....N.
+    0020 - 26 c9 f5 27 b6 1b 90 8a-3b 7b 6d fc a1 5c 22 09   &..'....;{m..\".
+    0030 - 4c 8d 3c 77 78 42 da 2b-a0 e1 af ee 14 68 bb 8c   L.<wxB.+.....h..
+    0040 - d5 72 b0 25 7b 6d 84 6d-5a b2 34 56 8a 94 dd 7e   .r.%{m.mZ.4V...~
 
 Here is the Decrypted Ticket ( 67 bytes ) in MSG3_receive():
-    0000 - a9 0b f1 a7 05 d0 c3 65-d1 09 8e 69 c6 64 ca 90   .......e...i.d..
-    0010 - 4a f5 23 2f f4 81 34 c4-02 3c af d1 88 68 8c 77   J.#/..4..<...h.w
-    0020 - 05 c1 9e 10 7a f1 69 e2-c6 84 58 e1 d9 ad cf d6   ....z.i...X.....
+    0000 - 07 36 2a 84 2e aa ce d6-da 5e a1 fe 43 46 e1 d4   .6*......^..CF..
+    0010 - 08 95 88 d6 4b e0 60 29-da 18 94 ad 89 41 3f e1   ....K.`).....A?.
+    0020 - 7f 0d bb 9f d9 62 a7 a1-1c 9b db 16 9d 4f 2f 5d   .....b.......O/]
     0030 - 0f 00 00 00 4d 61 64 61-61 68 20 45 6c 2d 41 6d   ....Madaah El-Am
     0040 - 61 72 00                                          ar.
 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 Basim received Message 3 from Amal on FD 7 with the following
     Session Ks { Key , IV}
-    0000 - a9 0b f1 a7 05 d0 c3 65-d1 09 8e 69 c6 64 ca 90   .......e...i.d..
-    0010 - 4a f5 23 2f f4 81 34 c4-02 3c af d1 88 68 8c 77   J.#/..4..<...h.w
-    0020 - 05 c1 9e 10 7a f1 69 e2-c6 84 58 e1 d9 ad cf d6   ....z.i...X.....
+    0000 - 07 36 2a 84 2e aa ce d6-da 5e a1 fe 43 46 e1 d4   .6*......^..CF..
+    0010 - 08 95 88 d6 4b e0 60 29-da 18 94 ad 89 41 3f e1   ....K.`).....A?.
+    0020 - 7f 0d bb 9f d9 62 a7 a1-1c 9b db 16 9d 4f 2f 5d   .....b.......O/]
 
 Basim also learned the following
     IDa= 'Madaah El-Amar'
     Na2 ( 4 Bytes ) is:
-    0000 - 2e 6e ef 8a                                       .n..
+    0000 - 67 cc 2b 7f                                       g.+.
 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 Basim computed this f(Na2) for MSG4:
-    0000 - 2e 6e ef 8b                                       .n..
+    0000 - 67 cc 2b 80                                       g.+.
 
 Basim Created this nonce Nb for MSG4:
-    0000 - fb 05 dc 87                                       ....
+    0000 - f8 fd 06 52                                       ...R
 
 
 **************************
@@ -53,7 +53,7 @@ Basim Created this nonce Nb for MSG4:
 **************************
 
 The following new Encrypted MSG4 ( 16 bytes ) has been created by MSG4_new ():  
-    0000 - 25 b3 67 cd 79 6e 22 0a-ec 96 97 c9 2f 47 22 bb   %.g.yn"...../G".
+    0000 - 06 fb 0a 4a c4 92 12 f5-50 ce 4b b9 40 c7 69 fc   ...J....P.K.@.i.
 
 Basim Sent the above MSG4 to Amal on FD 10
 
@@ -62,15 +62,15 @@ Basim Sent the above MSG4 to Amal on FD 10
 **************************
 
 The following Encrypted MSG5 ( 16 bytes ) has been received from FD 7 :
-    0000 - 9d 21 8a 90 57 e3 5e 37-0a 2b 1d eb 0a d1 d4 64   .!..W.^7.+.....d
+    0000 - 36 77 3d 74 6d 10 dc 81-66 a1 e1 a7 f7 d9 69 ee   6w=tm...f.....i.
 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 Basim expecting back this fNb in MSG5:
-    0000 - fb 05 dc 88                                       ....
+    0000 - f8 fd 06 53                                       ...S
 
 Basim received Message 5 from Amal on FD 7 with this f( Nb ) >>>> VALID
-    0000 - fb 05 dc 88                                       ....
+    0000 - f8 fd 06 53                                       ...S
 
 
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+

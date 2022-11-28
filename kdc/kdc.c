@@ -61,6 +61,7 @@ int main ( int argc , char * argv[] )
     BIO_dump_indent_fp (log, (const char *) Ka.key, SYMMETRIC_KEY_LEN, 4);
     fprintf( log , "\n" );
     BIO_dump_indent_fp (log, (const char *) Ka.iv, INITVECTOR_LEN, 4);
+    fprintf( log , "\n" );
 
     // Get Basim's master keys with the KDC
     if( ! getMasterKeyFromFiles( "./kdc/basimKey.bin", "./kdc/basimIV.bin", &Kb ) )
@@ -89,7 +90,7 @@ int main ( int argc , char * argv[] )
     fprintf( log , "\nKDC received message 1 from Amal on FD %d with\n"
                    "    IDa ='%s' , IDb = '%s'\n" , fd_A2K , IDa , IDb ) ;
     fprintf( log , "    Na ( %lu Bytes ) is\n" , NONCELEN ) ;
-    BIO_dump_indent_fp( log , (uCharPtr) Na , NONCELEN , 4 ) ;   fprintf( log , "\n");
+    BIO_dump_indent_fp( log , (const char *) Na , NONCELEN , 4 ) ;   fprintf( log , "\n");
     fflush( log ) ;
 
     //*************************************   
@@ -132,7 +133,7 @@ int main ( int argc , char * argv[] )
         exitError( "\nUnable to send MSG2 in KDC\n" );
     }
 
-    fprintf( log ,"The KDC sent the Encrypted MSG2 via FD=%d Successfully\n" , fd_K2A );
+    fprintf( log ,"The KDC sent the above Encrypted MSG2 ( %u bytes ) via FD=%d Successfully\n" , LenMsg2, fd_K2A );
     fflush( log ) ;
 
     free( msg2 )   ;
@@ -142,6 +143,7 @@ int main ( int argc , char * argv[] )
     //*************************************
     
     fprintf( log , "\nThe KDC has terminated normally. Goodbye\n" ) ;
+    fflush(log);
     fclose( log ) ;  
     return 0 ;
 }

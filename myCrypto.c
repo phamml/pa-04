@@ -408,28 +408,7 @@ unsigned MSG2_new( FILE *log , uint8_t **msg2, const myKey_t *Ka , const myKey_t
                    " created by MSG2_new():  \n" , LenMsg2 ) ;
     BIO_dump_indent_fp( log , *msg2 , LenMsg2 , 4 ) ;    fprintf( log , "\n" ) ;    
     fflush( log ) ;    
-    fclose( log ) ;
-    // // //
 
-    fprintf( log , "The following new Encrypted MSG2 ( %u bytes ) has been"
-                   " created by MSG2_new():  \n" , LenMsg2 ) ;
-    BIO_dump_indent_fp( log , *msg2 , LenMsg2 , 4 ) ;    fprintf( log , "\n" ) ;    
-
-    fprintf( log ,"This is the new MSG2 ( %u Bytes ) before Encryption:\n" , lenMsg2Plain);  
-    fprintf( log ,"    Ks { key + IV } (%lu Bytes) is:\n" , KEYSIZE );
-    BIO_dump_indent_fp ( log , (uCharPtr) Ks , KEYSIZE , 4 ) ;  fprintf( log , "\n") ; 
-
-    fprintf( log ,"    IDb (%u Bytes) is:\n" , LenB);
-    BIO_dump_indent_fp ( log , (uCharPtr) IDb , LenB , 4 ) ;  fprintf( log , "\n") ; 
-
-    fprintf( log ,"    Na (%lu Bytes) is:\n" , NONCELEN);
-    BIO_dump_indent_fp ( log , (uCharPtr) Na , NONCELEN , 4 ) ;  fprintf( log , "\n") ; 
-
-    fprintf( log ,"    Encrypted Ticket (%u Bytes) is\n" , lenTktCipher);
-    BIO_dump_indent_fp ( log , (uCharPtr) ciphertext , lenTktCipher , 4 ) ;  fprintf( log , "\n") ; 
-
-    fflush( log ) ;    
-    
     return LenMsg2 ;    
 
 }
@@ -539,7 +518,6 @@ unsigned MSG1_new ( FILE *log , uint8_t **msg1 , const char *IDa , const char *I
     // Copying Na into msg1
     memcpy(p, Na, NONCELEN);
 
-
     fprintf( log , "The following new MSG1 ( %u bytes ) has been created by MSG1_new ():\n" , LenMsg1 ) ;
     BIO_dump_indent_fp(log, *msg1, LenMsg1, 4);    fprintf( log , "\n" ) ;  
 
@@ -636,7 +614,7 @@ void  MSG1_receive( FILE *log , int fd , char **IDa , char **IDb , Nonce_t *Na )
     }
 
     // 5) Read Na
-    if ( read( fd , &Na , NONCELEN  ) !=  NONCELEN  )
+    if ( read( fd , Na , NONCELEN  ) !=  NONCELEN  )
     {
         fprintf( log , "Unable to read all %lu bytes of Na from FD %d in "
                        "MSG1_receive() ... EXITING\n" , NONCELEN , fd );
