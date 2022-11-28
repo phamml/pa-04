@@ -543,16 +543,6 @@ void  MSG1_receive( FILE *log , int fd , char **IDa , char **IDb , Nonce_t *Na )
     }
 
     unsigned LenMsg1 , LenA , LenB ;
-
-    // Read Len(Message 1)  
-    // if ( read( fd , &LenMsg1 , LENSIZE  ) !=  LENSIZE  )
-    // {
-    //     fprintf( log , "Unable to read all %lu bytes of Len(MSG1) from FD %d in "
-    //                    "MSG1_receive() ... EXITING\n" , LENSIZE , fd );
-        
-    //     fflush( log ) ;  fclose( log ) ;    
-    //     exitError( "" );
-    // }
    
     // Read in the components of Msg1:  L(A)  ||  A   ||  L(B)  ||  B   ||  Na
     // 1) Read Len(IDa)  
