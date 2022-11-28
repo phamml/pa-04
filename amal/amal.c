@@ -1,11 +1,12 @@
 /*----------------------------------------------------------------------------
 PA-04:  Enhanced Needham-Schroeder Key-Exchange with TWO-way Authentication
 
-FILE:   amal.c         SKELETON  
+FILE:   amal.c           
 
 Written By: 
-     1-  M U S T      T Y P E     Y O U R     N A M E(s)
-Submitted on: 
+     1- Emily Graff
+     2 - Mia Pham
+Submitted on: 12.01.22
 ----------------------------------------------------------------------------*/
 #include <linux/random.h>
 #include <time.h>
@@ -22,7 +23,7 @@ int main ( int argc , char * argv[] )
     FILE    *log ;
 
     
-    char *developerName = "Code By:  <<YOUR FULL NAME(s) IN UPPERCASE>>" ;
+    char *developerName = "Code By:  <<EMILY GRAFF>>" ;
     
     printf( "\nThis is Amal's    %s\n" , developerName ) ;
     
@@ -70,7 +71,7 @@ int main ( int argc , char * argv[] )
     //*************************************
     // Construct & Send    Message 1
     //*************************************
-    char     *IDa = "Choose your IDa" ,  *IDb = "Also, Choose an IDb .. be creative!" ;
+    char     *IDa = "Barba non facit philosophum." ,  *IDb = "Quidquid latine dictum sit, altum videtur" ;
     Nonce_t   Na;  
 
     // Create a random nonce Na
@@ -81,23 +82,63 @@ int main ( int argc , char * argv[] )
     LenMsg1 = MSG1_new( log , &msg1 , IDa , IDb , &Na ) ;
     
     // Send MSG1 to KDC
-    write( /* ... */ ) ;
-    write( /* ... */ ) ;
+    write( fd_A2K, msg1, LenMsg1 ) ;
 
     fprintf( log , "Amal sent message 1 ( %d bytes ) to the KDC on FD %d with\n"
                    "    IDa ='%s' , IDb = '%s'\n" , LenMsg1 , fd_A2K , IDa , IDb ) ;
     fprintf( log , "    Na ( %lu Bytes ) is\n" , NONCELEN ) ;
-    //
-    // .....  Missing Code
-    //
+    BIO_dump_indent_fp ( log , (const char *) Na, NONCELEN, 4 );
+    fflush(log);
+
+    free(msg1);
 
     //*************************************
     // Receive   &   Process Message 2
     //*************************************
-    
-    //
-    // .....  Your Code from PA-04_Part_ONE
-    //
+    unsigned lenIDb = strlen(IDb) + 1;
+
+    myKey_t   Ks ;       // Amal's session key with Basim. Created by the KDC   
+    char     *IDb2 ;     // IDb as received from KDC .. must match what was sent in MSG1
+    Nonce_t   NaCpy ;
+    uint8_t  *tktCipher ;
+    unsigned  lenTktCipher , LenKs= sizeof( myKey_t ) ;
+
+    MSG2_receive( log , fd_K2A, &Ka, &Ks, &IDb2, &NaCpy, &lenTktCipher, &tktCipher );
+
+
+    fprintf( log , "Amal received MSG 2 from the KDC\n" );
+
+    fprintf( log , "    Ks { Key , IV } (%u Bytes ) is:\n" , LenKs );
+    BIO_dump_indent_fp ( log , (const char *) &Ks, sizeof( myKey_t ) , 4 );    fprintf( log , "\n" );   
+
+    fprintf( log , "    IDb (%u Bytes):" , lenIDb ) ;
+
+    // Verify the strings IDb = IDb2 both in length and content
+    if( strlen(IDb) != strlen(IDb2) && strcmp(IDb, IDb2) != 0 )
+        fprintf( log , "   ..... MISMATCH .. but NOT Exiting\n" );
+    else
+        fprintf( log , "   ..... MATCH\n" );
+
+    BIO_dump_indent_fp ( log , IDb2 , lenIDb , 4 ) ;  fprintf( log , "\n") ; 
+
+    fprintf( log , "    This is my nonce Na (%lu bytes) I sent in MSG1:\n" , NONCELEN ) ;
+    BIO_dump_indent_fp ( log , (void *) &Na , NONCELEN , 4 ) ;  fprintf( log , "\n") ; 
+
+    fprintf( log , "    Received Copy of Na (%lu bytes):" , NONCELEN ) ;
+    // Verify Na == NaCpy    
+    if(Na == NaCpy )
+        fprintf( log , "    ..... VALID )\n" ) ;
+    else
+        fprintf( log , "    ..... INVALID ... but NOT Exiting\n" ) ;
+
+    BIO_dump_indent_fp ( log , (const char *) &NaCpy , NONCELEN , 4 ) ;  fprintf( log , "\n") ; 
+
+    fprintf( log , "    Encrypted Ticket (%d bytes):\n" , lenTktCipher ) ;
+    BIO_dump_indent_fp ( log , (const char *) &tktCipher, lenTktCipher, 4 );       fprintf( log , "\n") ;
+
+    free( IDb2 ) ;  // It was allocated memory by MSG2_receive()
+    fflush( log ) ;
+
 
     //*************************************
     // Construct & Send    Message 3
@@ -107,20 +148,28 @@ int main ( int argc , char * argv[] )
     uint8_t  *msg3 ;
 
     // Create Second Nonce Na2 by A to challenge B
+    RAND_bytes( (unsigned char *) Na2 , NONCELEN  );
     fprintf( log , "Amal Created this nonce Na2 for MSG3:\n") ;
-    //
-    // .....  Missing Code
-    //
+    BIO_dump_indent_fp ( log , (const char *) Na2, NONCELEN, 4 );
+    fflush(log);
 
-    LenMsg3 = MSG3_new( /* ... */ ) ;
+    LenMsg3 = MSG3_new( log, &msg3, lenTktCipher, tktCipher, &Na2 ) ;
     
     // Send MSG3 to Basim
-    write( /* ... */ ) ;
+    write( fd_A2B, msg3, LenMsg3 ) ;
+
+    if(write( fd_A2B, msg3, LenMsg3 ) != LenMsg3 )
+    {
+        fprintf( log , "Unable to send all %u bytes of of L(M3) || M3from A to B"
+                       "... EXITING\n" ,LenMsg3 ) ;
+        
+        fflush( log ) ;  fclose( log ) ;      free( msg3 )   ;
+        exitError( "\nUnable to send MSG4 in KDC\n" );
+    }
     fprintf( log , "Amal Sent MSG3 ( %u bytes ) to Basim on FD %d:\n" , LenMsg3 , fd_A2B ) ;
  
-    //
-    // .....  Missing Code
-    //
+    fflush( log ) ;
+    free(msg1);
 
     //*************************************
     // Receive   & Process Message 4
@@ -128,29 +177,25 @@ int main ( int argc , char * argv[] )
     Nonce_t   rcvd_fNa2 , my_fNa2 , Nb ;
  
     // Get MSG4 from Basim
-    MSG4_receive( /*...  */ ) ;    
-    
+    MSG4_receive( log, fd_B2A, &Ks, &rcvd_fNa2, &Nb) ;    
+    fprintf(log, "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
     fprintf( log , "\nAmal is expecting back this f( Na2 ) in MSG4:\n") ;
- 
-    //
-    // .....  Missing Code
-    //
+    BIO_dump_indent_fp ( log , (const char *) my_fNa2, NONCELEN, 4 );
+    fflush(log);
 
     fprintf( log , "Basim returned the following f( Na2 )   >>>> " ) ;
-    if ( /* ... */  )
+    if ( my_fNa2 == rcvd_fNa2  )
         fprintf( log , "VALID\n" ) ;
     else
         fprintf( log , "INVALID >>>> NOT Exiting)\n" ) ;
- 
-    //
-    // .....  Missing Code
-    //
+    
+    BIO_dump_indent_fp ( log , (const char *) rcvd_fNa2, NONCELEN, 4 );
+    fflush(log);
+
        
     fprintf( log , "Amal also received this Nb :\n"  ) ;
- 
-    //
-    // .....  Missing Code
-    //
+    BIO_dump_indent_fp ( log , (const char *)  Nb, NONCELEN, 4 );
+    fprintf(log, "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
 
 
     //*************************************
@@ -163,29 +208,30 @@ int main ( int argc , char * argv[] )
 
 
     // Compute fNb = f(Nb)
- 
-    //
-    // .....  Missing Code
-    //
+    fNonce(fNb, Nb);
 
     fprintf( log , "Amal computed this F(Nb) for MSG5:\n") ;
- 
-    //
-    // .....  Missing Code
-    //
+    BIO_dump_indent_fp ( log , (const char *) fNb, NONCELEN, 4 );
 
-    LenMsg5 = MSG5_new( /* ... */ ) ;
+
+    LenMsg5 = MSG5_new( log, &msg5,  &Ks, &fNb  ) ;
     
     // Send MSG5 to Basim
-    write( /* ... */ ) ;
-    write( /* ... */ ) ;
+     if(( write( fd_A2B, &LenMsg5, LENSIZE) != LENSIZE ) 
+        || ( write( fd_A2B, msg5, LenMsg5 ) != LenMsg5 ))
+    {
+        fprintf( log , "Unable to send all %lu bytes of of L(M5) || M5 from A to B"
+                       "... EXITING\n" , LENSIZE+LenMsg5 ) ;
+        
+        fflush( log ) ;  fclose( log ) ;      free( msg5 )   ;
+        exitError( "\nUnable to send MSG5 in KDC\n" );
+    }
 
+     fprintf(log, "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
      fprintf( log , "Amal Sending the above Message 5 ( %u bytes ) to Basim on FD %d\n"
-                   , LenMsg5 , /* ... */ );
- 
-    //
-    // .....  Missing Code
-    //
+                   , LenMsg5 , fd_A2B );
+    fprintf(log, "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
+    fflush(log);
 
 
     //*************************************   
@@ -196,4 +242,3 @@ int main ( int argc , char * argv[] )
     fclose( log ) ;
     return 0 ;
 }
-
