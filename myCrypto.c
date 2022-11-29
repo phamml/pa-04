@@ -827,7 +827,7 @@ unsigned MSG4_new( FILE *log , uint8_t **msg4, const myKey_t *Ks , Nonce_t *fNa2
     if ( lenPlaintext > PLAINTEXT_LEN_MAX )  
     {
         fprintf( log , "Plaintext of MSG4 too big %u bytes( max is %u ) to encrypt in MSG4_new "
-                       " ... EXITING\n" , lenTktPlain , DECRYPTED_LEN_MAX );        
+                       " ... EXITING\n" , lenPlaintext , DECRYPTED_LEN_MAX );        
         fflush( log ) ;  fclose( log ) ;     
         exitError( "\nPlaintext of MSG4 is too big in MSG4_new\n" );
     }
