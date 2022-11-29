@@ -22,32 +22,32 @@ gcc wrappers.c     dispatcher.c -o dispatcher
 # make sure Aboutabl executable have the 'x' flag
 chmod +x  *_aboutablEx*
 
-# echo
-# echo "*******************************************************"
-# echo "Testing STUDENT's Amal against Dr. Aboutabl's KDC+Basim"
-# echo "*******************************************************"
-# read -p "Press [Enter] key to continue ..."
-# echo
+echo
+echo "*******************************************************"
+echo "Testing STUDENT's Amal against Dr. Aboutabl's KDC+Basim"
+echo "*******************************************************"
+read -p "Press [Enter] key to continue ..."
+echo
 
-#     cp  kdc_aboutablExecutable         kdc/kdc
-# 	gcc amal/amal.c    myCrypto.c   -o amal/amal    -l:libcrypto.so.1.1
-#     cp  basim_aboutablExecutable       basim/basim
+    cp  kdc_aboutablExecutable         kdc/kdc
+	gcc amal/amal.c    myCrypto.c   -o amal/amal    -l:libcrypto.so.1.1
+    cp  basim_aboutablExecutable       basim/basim
 
-#     ./dispatcher
+    ./dispatcher
 
-#     echo
-#     echo "======  ABOUTABL'S  KDC    LOG  ========="
-#     cat kdc/logKDC.txt
-#     echo
+    echo
+    echo "======  ABOUTABL'S  KDC    LOG  ========="
+    cat kdc/logKDC.txt
+    echo
 
-#     echo
-#     echo "======  STUDENT's   Amal   LOG  ========="
-#     cat amal/logAmal.txt
+    echo
+    echo "======  STUDENT's   Amal   LOG  ========="
+    cat amal/logAmal.txt
 
-#     echo
-#     echo "======  ABOUTABL's  Basim  LOG  ========="
-#     cat basim/logBasim.txt
-#     echo
+    echo
+    echo "======  ABOUTABL's  Basim  LOG  ========="
+    cat basim/logBasim.txt
+    echo
 
 echo
 echo "********************************************************"
@@ -75,56 +75,55 @@ echo
     cat basim/logBasim.txt
     echo
 
-# echo
-# echo "*******************************************************"
-# echo "Testing STUDENT's Basim against Dr. Aboutabl's KDC+Amal"
-# echo "*******************************************************"
-# read -p "Press [Enter] key to continue ..."
-# echo
+echo
+echo "*******************************************************"
+echo "Testing STUDENT's Basim against Dr. Aboutabl's KDC+Amal"
+echo "*******************************************************"
+read -p "Press [Enter] key to continue ..."
+echo
 
-#     cp  kdc_aboutablExecutable         kdc/kdc
-#     cp  amal_aboutablExecutable        amal/amal
-# 	gcc basim/basim.c  myCrypto.c   -o basim/basim  -l:libcrypto.so.1.1
+    cp  kdc_aboutablExecutable         kdc/kdc
+    cp  amal_aboutablExecutable        amal/amal
+	gcc basim/basim.c  myCrypto.c   -o basim/basim  -l:libcrypto.so.1.1
 
-#     ./dispatcher
+    ./dispatcher
 
-#     echo
-#     echo "======  ABOUTABL'S  KDC    LOG  ========="
-#     cat kdc/logKDC.txt
-#     echo
+    echo
+    echo "======  ABOUTABL'S  KDC    LOG  ========="
+    cat kdc/logKDC.txt
+    echo
 
-#     echo
-#     echo "======  ABOUTABL's  Amal   LOG  ========="
-#     cat amal/logAmal.txt
+    echo
+    echo "======  ABOUTABL's  Amal   LOG  ========="
+    cat amal/logAmal.txt
 
-#     echo
-#     echo "======  STUDENT's   Basim  LOG  ========="
-#     cat basim/logBasim.txt
-#     echo
+    echo
+    echo "======  STUDENT's   Basim  LOG  ========="
+    cat basim/logBasim.txt
+    echo
 
-# echo
-# echo "*******************************************************"
-# echo "Testing STUDENT's Amal+Basim against Dr. Aboutabl's KDC"
-# echo "*******************************************************"
-# read -p "Press [Enter] key to continue ..."
-# echo
+echo
+echo "********************************************************"
+echo "Testing STUDENT's Code All with itself"
+echo "********************************************************"
+read -p "Press [Enter] key to continue ..."
+echo
+	gcc amal/amal.c    myCrypto.c   -o amal/amal    -l:libcrypto.so.1.1
+	gcc basim/basim.c  myCrypto.c   -o basim/basim  -l:libcrypto.so.1.1
+	gcc kdc/kdc.c      myCrypto.c   -o kdc/kdc      -l:libcrypto.so.1.1
 
-#     cp  kdc_aboutablExecutable         kdc/kdc
-# 	gcc amal/amal.c    myCrypto.c   -o amal/amal    -l:libcrypto.so.1.1
-# 	gcc basim/basim.c  myCrypto.c   -o basim/basim  -l:libcrypto.so.1.1
+    ./dispatcher
 
-#     ./dispatcher
+    echo
+    echo "======  STUDENT's   KDC    LOG  ========="
+    cat kdc/logKDC.txt
+    echo
 
-#     echo
-#     echo "======  ABOUTABL'S  KDC    LOG  ========="
-#     cat kdc/logKDC.txt
-#     echo
+    echo
+    echo "======  STUDENT's   Amal   LOG  ========="
+    cat amal/logAmal.txt
 
-#     echo
-#     echo "======  STUDENT's   Amal   LOG  ========="
-#     cat amal/logAmal.txt
-
-#     echo
-#     echo "======  STUDENT's   Basim  LOG  ========="
-#     cat basim/logBasim.txt
-#     echo
+    echo
+    echo "======  STUDENT's   Basim  LOG  ========="
+    cat basim/logBasim.txt
+    echo
