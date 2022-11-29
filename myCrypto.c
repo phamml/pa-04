@@ -1,7 +1,7 @@
 /*----------------------------------------------------------------------------
 My Cryptographic Library
 
-FILE:   myCrypto.c         SKELETON  
+FILE:   myCrypto.c           
 
 Written By: 
      1- Mia Pham
@@ -423,10 +423,125 @@ unsigned MSG2_new( FILE *log , uint8_t **msg2, const myKey_t *Ka , const myKey_t
 void MSG2_receive( FILE *log , int fd , const myKey_t *Ka , myKey_t *Ks, char **IDb , 
                        Nonce_t *Na , unsigned *lenTktCipher , uint8_t **tktCipher )
 {
-    // CODE FROM pa-04 PART ONE
+    unsigned  msg2CipherLen ;
+    uint8_t  *p ;    
+    unsigned *lenPtr ;    
+    unsigned  LenB  ;   
 
-    return ;  
+    if (log == NULL || Ka == NULL || Ks == NULL || Ks == NULL || 
+       IDb == NULL || Na == NULL || lenTktCipher == NULL || tktCipher == NULL)  
+    {
+        fprintf( log , "NULL pointer(s) passed to  MSG2_receive() ... EXITING\n"  );       
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "NULL pointer(s) passed to MSG2_receive()" );
+    }
+
+    // // Read Len(Message 2)
+    if ( read( fd , &msg2CipherLen , LENSIZE  ) !=  LENSIZE  )
+    {
+        fprintf( log , "Unable to read all %lu bytes of Len(MSG2) from FD %d in "
+                       "MSG2_receive() ... EXITING\n" , LENSIZE , fd );
+        
+        fflush( log ) ;  fclose( log ) ;    
+        exitError( "" );
+    }
+
+    if ( msg2CipherLen > CIPHER_LEN_MAX  )  
+    {
+        fprintf( log , "Encrypted MSG2 is too big %u bytes( max is %u ) in MSG2_receive() "
+                       " ... EXITING\n" , msg2CipherLen , CIPHER_LEN_MAX );
+        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "Encrypted MSG2 is too big in MSG2_receive()" );
+    }
+
+    // // Now read MSG2 itself
+    if ( read(fd, ciphertext, msg2CipherLen ) != msg2CipherLen )  
+    {
+        fprintf( log , "Unable to read all %u bytes of encrypted MSG2 from FD %d in MSG2_receive() "
+                       "... EXITING\n" , msg2CipherLen , fd ) ;
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "Unable to read all bytes of encrypted MSG2 in MSG2_receive()" );
+    }
+
+    fprintf( log ,"The following Encrypted MSG2 ( %u bytes ) has been received from FD %d Successfully\n" 
+                 , msg2CipherLen , fd );
+    BIO_dump_indent_fp( log , ciphertext , msg2CipherLen , 4 ) ;   fprintf( log , "\n");
+    fflush( log ) ;
+
+    // // Decrypt  MSG2 using Ka
+    unsigned msg2Len ;
+    msg2Len = decrypt( ciphertext, msg2CipherLen, Ka->key, Ka->iv,  decryptext) ;
+    if (  msg2Len > DECRYPTED_LEN_MAX )  
+    {
+        fprintf( log , "Dercypted text of MSG2 is too big %u bytes( max is %u ) in MSG2_receive()"
+                       " ... EXITING\n" , msg2Len , DECRYPTED_LEN_MAX ) ;
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nPlaintext too big decrypting received Msg2\n" );
+    }
+
+    // // Parse the Decrypted Msg2 into its components: 
+    // // {  Ks || L(IDb) || IDb  || Na || L(TktCipher) || TktCipher }
+    p = decryptext ;
+
+    // Parse Ks & copy it to Caller's buffer
+    memcpy( Ks , p,  KEYSIZE ) ;                        
+
+    fprintf( log ,"    Ks { key + IV } (%lu Bytes) is:\n" , KEYSIZE );
+    BIO_dump_indent_fp ( log , (const char *) Ks, KEYSIZE , 4 ) ;  fprintf( log , "\n") ; 
+    p += KEYSIZE;
+     fflush(log);
+
+    // // Parse IDb & copy it to Caller's buffer
+    lenPtr = (unsigned *) p    ;   LenB  = *lenPtr    ;          p += LENSIZE ;
+
+     // // Allocate LenB bytes for  *IDb  then copy form IDb to *IDb
+    // //  ... some code .....  
+    memcpy( IDb , p,  LenB );
+
+    fprintf( log ,"    IDb (%u Bytes) is:\n" , LenB );
+    BIO_dump_indent_fp ( log , (const char *) IDb , LenB , 4 ) ;  fprintf( log , "\n") ; 
+    fflush(log);
+   
+    p += LenB ;
+
+    // Parse Na & copy it to Caller's buffer
+    //  ... some code .....  
+    memcpy(  Na ,p, NONCELEN ) ;                         
+
+    fprintf( log ,"    Na (%lu Bytes) I sent in MSG1:\n" , NONCELEN );
+    BIO_dump_indent_fp ( log , (const char *) Na , NONCELEN , 4 ) ;  fprintf( log , "\n") ; 
+    fflush(log);
+
+  //  Allocate exact memory to Caller's   *tktCipher
+   // Parse the Encrypted Ticket & copy it to Caller's buffer
+  //   ... some code .....  
+    Nonce_t NaCpy;
+    memcpy( NaCpy, Na , NONCELEN ) ;
+
+    fprintf( log , "    Received Copy of Na (%lu bytes):" , NONCELEN ) ;
+    // Verify Na == NaCpy    
+
+    if(memcmp(Na, NaCpy, NONCELEN) == 0 )
+        fprintf( log , "    ..... VALID )\n" ) ;
+    else
+        fprintf( log , "    ..... INVALID ... but NOT Exiting\n" ) ;
+
+    BIO_dump_indent_fp ( log , (const char *) NaCpy , NONCELEN , 4 ) ;  fprintf( log , "\n") ; 
+    fflush(log);
+
+    p += NONCELEN;
+    lenPtr = (unsigned *) p  ;   *lenPtr = *lenTktCipher ;       
+    p += LENSIZE ;
+    memcpy(tktCipher , p, 80 );
+
+    fprintf( log , "    Encrypted Ticket (%d bytes):\n" , 80) ;
+    BIO_dump_indent_fp ( log , (const char *) tktCipher, 80, 4 );       fprintf( log , "\n") ;
+    fflush(log);
+    
+    return;
 }
+
 
 //-----------------------------------------------------------------------------
 // Utility to read Key/IV from files
