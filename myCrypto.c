@@ -716,6 +716,14 @@ void MSG3_receive( FILE *log , int fd , const myKey_t *Kb , myKey_t *Ks , char *
         exitError( "" );
     }
 
+    if ( lenTktCipher > CIPHER_LEN_MAX )  
+    {
+        fprintf( log , "TicketCiphertext of MSG3 too big %u bytes( max is %u ) to fit into ciphertext[] in MSG3_receive "
+                       " ... EXITING\n" , lenTktCipher , CIPHER_LEN_MAX );        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nPlaintext of MSG3 is too big in MSG3_receive\n" );
+    }
+
     if ( read( fd , ciphertext , lenTktCipher  ) !=  lenTktCipher )
     {
         fprintf( log , "Unable to read all %u bytes of TicketCiphertext from FD %d in "
@@ -730,6 +738,13 @@ void MSG3_receive( FILE *log , int fd , const myKey_t *Kb , myKey_t *Ks , char *
     fflush(log);
 
     // I.1) Decrypt the ticket into the global scratch buffer decryptext[]. Make sure it fits
+    if ( lenTktPlain > PLAINTEXT_LEN_MAX )  
+    {
+        fprintf( log , "TicketPlaintext of MSG3 too big %u bytes( max is %u ) to decrypt in MSG3_receive "
+                       " ... EXITING\n" , lenTktPlain , DECRYPTED_LEN_MAX );        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nTicketPlaintext of MSG3 is too big in MSG3_receive\n" );
+    }
     lenTktPlain =  decrypt(ciphertext, lenTktCipher, Kb->key, Kb->iv, decryptext);
 
     fprintf( log ,"Here is the Decrypted Ticket ( %d bytes ) in MSG3_receive():\n" , lenTktPlain ) ;
@@ -809,6 +824,13 @@ unsigned MSG4_new( FILE *log , uint8_t **msg4, const myKey_t *Ks , Nonce_t *fNa2
     p += NONCELEN ;
     // Now, encrypt MSG4 plaintext using the session key Ks;
     // Use the global scratch buffer ciphertext[] to collect the result.  Make sure it fits.
+    if ( lenPlaintext > PLAINTEXT_LEN_MAX )  
+    {
+        fprintf( log , "Plaintext of MSG4 too big %u bytes( max is %u ) to encrypt in MSG4_new "
+                       " ... EXITING\n" , lenTktPlain , DECRYPTED_LEN_MAX );        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nPlaintext of MSG4 is too big in MSG4_new\n" );
+    }
     LenMsg4 = encrypt( plaintext, lenPlaintext, Ks->key, Ks->iv , ciphertext );
 
     // Now allocate a buffer for the caller, and copy the encrypted MSG4 to it
@@ -864,6 +886,13 @@ void  MSG4_receive( FILE *log , int fd , const myKey_t *Ks , Nonce_t *rcvd_fNa2 
         fflush( log ) ;  fclose( log ) ;    
         exitError( "" );
     }
+    if ( LenMSG4cipher > CIPHER_LEN_MAX )  
+    {
+        fprintf( log , "Ciphertext of MSG4 too big %u bytes( max is %u ) to fit into ciphertext[] in MSG4_receive "
+                       " ... EXITING\n" , LenMSG4cipher , CIPHER_LEN_MAX );        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nCiphertext of MSG4 is too big in MSG4_receive\n" );
+    }
 
     if ( read( fd , ciphertext , LenMSG4cipher  ) !=  LenMSG4cipher )
     {
@@ -881,6 +910,13 @@ void  MSG4_receive( FILE *log , int fd , const myKey_t *Ks , Nonce_t *rcvd_fNa2 
     // Now, Decrypt MSG4 using Ks
     // Use the global scratch buffer decryptext[] to collect the results of decryption.
     // Make sure it fits.
+    if ( LenMSG4cipher > CIPHER_LEN_MAX )  
+    {
+        fprintf( log , "Ciphertext of MSG4 too big %u bytes( max is %u ) to decrypt in MSG4_receive "
+                       " ... EXITING\n" , LenMSG4cipher , CIPHER_LEN_MAX );        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nCiphertext of MSG4 is too big in MSG4_receive\n" );
+    }
     LenMsg4 = decrypt(ciphertext, LenMSG4cipher, Ks->key, Ks->iv, decryptext);
 
     // Parse MSG4 into its components f( Na2 ) and Nb
@@ -921,12 +957,28 @@ unsigned MSG5_new( FILE *log , uint8_t **msg5, const myKey_t *Ks ,  Nonce_t *fNb
     // Construct MSG5 Plaintext  = {  f(Nb)  }
     // Use the global scratch buffer plaintext[] for MSG5 plaintext. Make sure it fits 
     msg5PlainLen = NONCELEN;
+    if ( msg5PlainLen > PLAINTEXT_LEN_MAX )  
+    {
+        fprintf( log , "Plaintext of MSG5 too big %u bytes( max is %u ) to fit into plaintext[] in MSG5_new "
+                       " ... EXITING\n" , msg5PlainLen , PLAINTEXT_LEN_MAX );        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nPlaintext of MSG5 is too big in MSG5_new\n" );
+    }
+
     p = plaintext;
     memcpy (p, fNb, NONCELEN);
 
     // Now, encrypt( Ks , {plaintext} );
     // Use the global scratch buffer ciphertext[] to collect result. Make sure it fits.
+    if ( msg5PlainLen > PLAINTEXT_LEN_MAX )  
+    {
+        fprintf( log , "Plaintext of MSG5 too big %u bytes( max is %u ) to encrypt in MSG5_new "
+                       " ... EXITING\n" , msg5PlainLen , PLAINTEXT_LEN_MAX );        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nPlaintext of MSG5 is too big in MSG5_new\n" );
+    }
     unsigned LenMSG5cipher = encrypt (plaintext, msg5PlainLen, Ks->key, Ks->iv, ciphertext);
+
     // Now allocate a LenMSG5cipher for the caller, and copy the encrypted MSG5 to it
     *msg5 = malloc(LenMSG5cipher);
     if (*msg5 == NULL)
@@ -980,6 +1032,13 @@ void  MSG5_receive( FILE *log , int fd , const myKey_t *Ks , Nonce_t *fNb )
 
     // Use the global scratch buffer ciphertext[] to receive encrypted MSG5.
     // Make sure it fits.
+    if ( LenMSG5cipher > CIPHER_LEN_MAX )  
+    {
+        fprintf( log , "Ciphertext of MSG5 too big %u bytes( max is %u ) to fit into ciphertext[] in MSG5_receive "
+                       " ... EXITING\n" , LenMSG5cipher , CIPHER_LEN_MAX );        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nCiphertext of MSG5 is too big in MSG5_receive\n" );
+    }
     if ( read( fd , ciphertext , LenMSG5cipher  ) !=  LenMSG5cipher  )
     {
         fprintf( log , "Unable to read all %u bytes of MSG5 from FD %d in "
@@ -995,6 +1054,13 @@ void  MSG5_receive( FILE *log , int fd , const myKey_t *Ks , Nonce_t *fNb )
     // Now, Decrypt MSG5 using Ks
     // Use the global scratch buffer decryptext[] to collect the results of decryption
     // Make sure it fits
+    if ( LenMSG5cipher > CIPHER_LEN_MAX )  
+    {
+        fprintf( log , "Ciphertext of MSG5 too big %u bytes( max is %u ) to decrypt in MSG5_receive "
+                       " ... EXITING\n" , LenMSG5cipher , CIPHER_LEN_MAX );        
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nCiphertext of MSG5 is too big in MSG5_receive\n" );
+    }
     LenMsg5 = decrypt(ciphertext, LenMSG5cipher, Ks->key, Ks->iv, decryptext);
 
     // Parse MSG5 into its components f( Nb )
