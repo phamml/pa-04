@@ -6,7 +6,7 @@ FILE:   kdc.c
 Written By: 
     1 - Emily Graff
     2 - Mia Pham
-Submitted on: 11.26.22
+Submitted on: 12.01.22
 ----------------------------------------------------------------------------*/
 
 #include <linux/random.h>
