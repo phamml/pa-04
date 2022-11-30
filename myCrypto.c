@@ -533,7 +533,7 @@ void MSG2_receive( FILE *log , int fd , const myKey_t *Ka , myKey_t *Ks, char **
     p += NONCELEN;
     lenPtr = (unsigned *) p  ;   *lenPtr = *lenTktCipher ;       
     p += LENSIZE ;
-    memcpy(tktCipher , p, 80 );
+    memcpy(tktCipher, p, 96 );
 
     fprintf( log , "    Encrypted Ticket (%d bytes):\n" , 80) ;
     BIO_dump_indent_fp ( log , (const char *) tktCipher, 80, 4 );       fprintf( log , "\n") ;
