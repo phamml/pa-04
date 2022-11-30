@@ -71,7 +71,7 @@ int main ( int argc , char * argv[] )
     //*************************************
     // Construct & Send    Message 1
     //*************************************
-    char     *IDa = "Barba non facit philosophum." ,  *IDb = "Quidquid latine dictum sit, altum videtur" ;
+    char     *IDa = "Quidquid latine dictum sit, altum videtur." ,  *IDb = "Anything said in Latin sounds profound." ;
     Nonce_t   Na;  
 
     // Create a random nonce Na
