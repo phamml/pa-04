@@ -18,10 +18,30 @@ The following new MSG1 ( 83 bytes ) has been created by MSG1_new ():
     0010 - 63 69 74 20 70 68 69 6c-6f 73 6f 70 68 75 6d 2e   cit philosophum.
     0020 - 00 2a 00 00 00 51 75 69-64 71 75 69 64 20 6c 61   .*...Quidquid la
     0030 - 74 69 6e 65 20 64 69 63-74 75 6d 20 73 69 74 2c   tine dictum sit,
-    0040 - 20 61 6c 74 75 6d 20 76-69 64 65 74 75 72 00 b9    altum videtur..
-    0050 - 8d 61 22                                          .a"
+    0040 - 20 61 6c 74 75 6d 20 76-69 64 65 74 75 72 00 9b    altum videtur..
+    0050 - 53 9f 22                                          S."
 
 Amal sent message 1 ( 83 bytes ) to the KDC on FD 4 with
     IDa ='Barba non facit philosophum.' , IDb = 'Quidquid latine dictum sit, altum videtur'
     Na ( 4 Bytes ) is
-    0000 - b9 8d 61 22                                       ..a"
+    0000 - 9b 53 9f 22                                       .S."
+
+**************************
+         MSG2 Recieve
+**************************
+
+The following Encrypted MSG2 ( 208 bytes ) has been received from FD 5 Successfully
+    0000 - 6b 72 f5 ac a1 c2 d4 1a-fc eb 62 f4 d5 45 a0 a3   kr........b..E..
+    0010 - 3d 00 34 25 56 ef 10 e8-29 32 2a 4a e5 52 96 db   =.4%V...)2*J.R..
+    0020 - d7 4d 11 b1 6e 08 46 3d-e7 3f 0f 94 78 08 2c 8d   .M..n.F=.?..x.,.
+    0030 - 17 4d 34 84 28 ee 92 04-b8 7f 4b 2d e7 87 e1 d8   .M4.(.....K-....
+    0040 - 6c e2 cb f2 c7 c9 4b 8a-d3 3e f4 c9 4f 0d dd 05   l.....K..>..O...
+    0050 - b5 da cf 8b 71 bc 0b c3-4b 95 6f a2 14 1d 27 d0   ....q...K.o...'.
+    0060 - 95 82 ed e1 21 d5 88 ab-91 d4 a4 07 64 07 c1 c1   ....!.......d...
+    0070 - 91 e8 db b9 54 d9 74 bb-2b 69 9e f2 7e 92 cc 13   ....T.t.+i..~...
+    0080 - d5 d8 9d 85 1f 60 7f 34-b9 14 78 85 26 44 7f 60   .....`.4..x.&D.`
+    0090 - be b0 b8 0a 43 49 da f1-30 1d 85 04 fb f9 a1 31   ....CI..0......1
+    00a0 - 45 bd 5c 0f 71 9a 14 d6-74 e5 32 ac 6d e9 5a 46   E.\.q...t.2.m.ZF
+    00b0 - 03 a4 b8 7c 1c ca ca ba-3e 4d 32 50 24 6a 6d 4b   ...|....>M2P$jmK
+    00c0 - 20 fd c5 13 91 de a7 e6-d4 38 dc 63 ae ec d3 b0    ........8.c....
+
