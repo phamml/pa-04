@@ -330,7 +330,7 @@ unsigned MSG2_new( FILE *log , uint8_t **msg2, const myKey_t *Ka , const myKey_t
     p += LENSIZE ;
     memcpy( p , IDa , LenA );
     
-    fprintf( log ,"    Plaintext Ticket (%u Bytes) is\n" , tktPlainLen);
+    fprintf( log , "Plaintext Ticket (%u Bytes) is\n" , tktPlainLen);
     BIO_dump_indent_fp ( log , TktPlain , tktPlainLen , 4 ) ;  fprintf( log , "\n") ; 
 
     // Now, set TktCipher = encrypt( Kb , TktPlain );
@@ -423,6 +423,10 @@ unsigned MSG2_new( FILE *log , uint8_t **msg2, const myKey_t *Ka , const myKey_t
 void MSG2_receive( FILE *log , int fd , const myKey_t *Ka , myKey_t *Ks, char **IDb , 
                        Nonce_t *Na , unsigned *lenTktCipher , uint8_t **tktCipher )
 {
+    fprintf( log , "\n**************************\n");
+    fprintf( log , "         MSG2 Receive\n");
+    fprintf( log , "**************************\n\n");
+
     unsigned  msg2CipherLen ;
     uint8_t  *p ;    
     unsigned *lenPtr ;    
@@ -486,59 +490,45 @@ void MSG2_receive( FILE *log , int fd , const myKey_t *Ka , myKey_t *Ks, char **
 
     // Parse Ks & copy it to Caller's buffer
     memcpy( Ks , p,  KEYSIZE ) ;                        
-
-    fprintf( log ,"    Ks { key + IV } (%lu Bytes) is:\n" , KEYSIZE );
-    BIO_dump_indent_fp ( log , (const char *) Ks, KEYSIZE , 4 ) ;  fprintf( log , "\n") ; 
     p += KEYSIZE;
-     fflush(log);
 
     // // Parse IDb & copy it to Caller's buffer
-    lenPtr = (unsigned *) p    ;   LenB  = *lenPtr    ;          p += LENSIZE ;
+    lenPtr = (unsigned *) p;   
+    LenB  = *lenPtr;          
+    p += LENSIZE ;
 
-     // // Allocate LenB bytes for  *IDb  then copy form IDb to *IDb
-    // //  ... some code .....  
-    memcpy( IDb , p,  LenB );
-
-    fprintf( log ,"    IDb (%u Bytes) is:\n" , LenB );
-    BIO_dump_indent_fp ( log , (const char *) IDb , LenB , 4 ) ;  fprintf( log , "\n") ; 
-    fflush(log);
-   
-    p += LenB ;
+    *IDb = malloc (LenB);
+    if (*IDb == NULL)
+    {
+        fprintf( log , "Out of Memory allocating %u bytes for IDb"
+                       " in MSG2_recieve ... EXITING\n" , LenB );       
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nOut of Memory allocating for IDb of MSG2 in MSG2_recieve\n" );   
+    }
+    memcpy( *IDb, p, LenB )  ; 
+    p += LenB;
 
     // Parse Na & copy it to Caller's buffer
     //  ... some code .....  
-    memcpy(  Na ,p, NONCELEN ) ;                         
+    memcpy(  Na, p, NONCELEN ) ;    
+    p += NONCELEN;                     
 
-    fprintf( log ,"    Na (%lu Bytes) I sent in MSG1:\n" , NONCELEN );
-    BIO_dump_indent_fp ( log , (const char *) Na , NONCELEN , 4 ) ;  fprintf( log , "\n") ; 
-    fflush(log);
-
-  //  Allocate exact memory to Caller's   *tktCipher
-   // Parse the Encrypted Ticket & copy it to Caller's buffer
-  //   ... some code .....  
-    Nonce_t NaCpy;
-    memcpy( NaCpy, Na , NONCELEN ) ;
-
-    fprintf( log , "    Received Copy of Na (%lu bytes):" , NONCELEN ) ;
-    // Verify Na == NaCpy    
-
-    if(memcmp(Na, NaCpy, NONCELEN) == 0 )
-        fprintf( log , "    ..... VALID )\n" ) ;
-    else
-        fprintf( log , "    ..... INVALID ... but NOT Exiting\n" ) ;
-
-    BIO_dump_indent_fp ( log , (const char *) NaCpy , NONCELEN , 4 ) ;  fprintf( log , "\n") ; 
-    fflush(log);
-
-    p += NONCELEN;
-    lenPtr = (unsigned *) p  ;   *lenPtr = *lenTktCipher ;       
+    //  Allocate exact memory to Caller's   *tktCipher
+    // Parse the Encrypted Ticket & copy it to Caller's buffer
+    //   ... some code .....  
+    lenPtr = (unsigned *) p  ;   *lenTktCipher = *lenPtr;    
     p += LENSIZE ;
-    memcpy(tktCipher, p, 96 );
-
-    fprintf( log , "    Encrypted Ticket (%d bytes):\n" , 80) ;
-    BIO_dump_indent_fp ( log , (const char *) tktCipher, 80, 4 );       fprintf( log , "\n") ;
-    fflush(log);
     
+    *tktCipher =  malloc (*lenTktCipher);
+    if (*tktCipher == NULL)
+    {
+        fprintf( log , "Out of Memory allocating %u bytes for tktCipher"
+                       " in MSG2_recieve ... EXITING\n" , LenB );       
+        fflush( log ) ;  fclose( log ) ;     
+        exitError( "\nOut of Memory allocating for tktCipher of MSG2 in MSG2_recieve\n" );   
+    }
+    memcpy( *tktCipher, p, *lenTktCipher )  ; 
+   
     return;
 }
 
@@ -853,10 +843,10 @@ void MSG3_receive( FILE *log , int fd , const myKey_t *Kb , myKey_t *Ks , char *
     fflush(log);
 
     // I.1) Decrypt the ticket into the global scratch buffer decryptext[]. Make sure it fits
-    if ( lenTktPlain > PLAINTEXT_LEN_MAX )  
+    if ( lenTktCipher > CIPHER_LEN_MAX )  
     {
-        fprintf( log , "TicketPlaintext of MSG3 too big %u bytes( max is %u ) to decrypt in MSG3_receive "
-                       " ... EXITING\n" , lenTktPlain , DECRYPTED_LEN_MAX );        
+        fprintf( log , "TicketCiphertext of MSG3 too big %u bytes( max is %u ) to decrypt in MSG3_receive "
+                       " ... EXITING\n" , lenTktCipher , CIPHER_LEN_MAX );        
         fflush( log ) ;  fclose( log ) ;     
         exitError( "\nTicketPlaintext of MSG3 is too big in MSG3_receive\n" );
     }
@@ -976,13 +966,14 @@ unsigned MSG4_new( FILE *log , uint8_t **msg4, const myKey_t *Ks , Nonce_t *fNa2
 void  MSG4_receive( FILE *log , int fd , const myKey_t *Ks , Nonce_t *rcvd_fNa2 , Nonce_t *Nb )
 {
     // MSG4 = Encr( Ks ,  { f(Na2) || Nb }  ) by Basim
-
     uint8_t  *p ;    
     unsigned  LenMsg4 , LenMSG4cipher  ;
 
     fprintf( log , "\n**************************\n");
     fprintf( log , "         MSG4 Receive\n");
     fprintf( log , "**************************\n\n");
+    fflush(log);
+
     if (log == NULL || Ks == NULL || rcvd_fNa2 == NULL || Nb == NULL)
     {
         fprintf( log , "NULL pointer(s) passed to MSG4_recieve() ... EXITING\n"  );        
@@ -1165,6 +1156,7 @@ void  MSG5_receive( FILE *log , int fd , const myKey_t *Ks , Nonce_t *fNb )
 
     fprintf( log ,"The following Encrypted MSG5 ( %u bytes ) has been received"
                   " from FD %d :\n" , LenMSG5cipher , fd );
+    BIO_dump_indent_fp( log , ciphertext , LenMSG5cipher , 4 ) ;    fprintf( log , "\n" ) ;    
 
     // Now, Decrypt MSG5 using Ks
     // Use the global scratch buffer decryptext[] to collect the results of decryption

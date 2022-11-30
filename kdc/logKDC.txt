@@ -1,7 +1,6 @@
 
-This is the KDC's REFERENCE Code by <<ABOUTABL>>
-
-<readFr. Amal> FD=3 , <sendTo Amal> FD=6
+This is the KDC's Code by <<EMILY GRAFF>>
+	<readFr. Amal> FD=3 , <sendTo Amal> FD=6
 
 Amal has this Master Ka { key , IV }
     0000 - 95 de 35 97 11 0c 6a e0-81 3c 06 ea 78 2f 22 7b   ..5...j..<..x/"{
@@ -15,7 +14,6 @@ Basim has this Master Kb { key , IV }
 
     0000 - bb 55 bf b0 0b e3 9f fc-c6 44 38 50 be 58 79 48   .U.......D8P.XyH
 
-
 **************************
          MSG1 Receive
 **************************
@@ -25,7 +23,7 @@ MSG1 ( 83 bytes ) has been received on FD 3 by MSG1_receive():
 KDC received message 1 from Amal on FD 3 with
     IDa ='Barba non facit philosophum.' , IDb = 'Quidquid latine dictum sit, altum videtur'
     Na ( 4 Bytes ) is
-    0000 - 9b 53 9f 22                                       .S."
+    0000 - 08 0b cd 4d                                       ...M
 
 
 **************************
@@ -33,33 +31,33 @@ KDC received message 1 from Amal on FD 3 with
 **************************
 
 Plaintext Ticket (81 Bytes) is
-    0000 - af 2f d2 62 27 1e c1 09-34 64 83 66 a9 7f 62 21   ./.b'...4d.f..b!
-    0010 - 77 ef 74 cb 0a ed df 2c-b8 0f ab b7 b7 92 a4 32   w.t....,.......2
-    0020 - 18 9a a3 4b 5b 4a 86 31-3a 5c 7d de be 78 eb cf   ...K[J.1:\}..x..
+    0000 - 87 5d 64 64 b6 d3 a6 b0-01 b4 09 c7 52 e2 b1 d8   .]dd........R...
+    0010 - f0 03 73 6a 34 06 a9 22-a7 82 cb 34 d9 37 6b be   ..sj4.."...4.7k.
+    0020 - 59 3e 28 7a 09 e1 f0 41-c5 a9 21 eb ae ae 98 d2   Y>(z...A..!.....
     0030 - 1d 00 00 00 42 61 72 62-61 20 6e 6f 6e 20 66 61   ....Barba non fa
     0040 - 63 69 74 20 70 68 69 6c-6f 73 6f 70 68 75 6d 2e   cit philosophum.
     0050 - 00                                                .
 
 The following new Encrypted MSG2 ( 208 bytes ) has been created by MSG2_new():  
-    0000 - 6b 72 f5 ac a1 c2 d4 1a-fc eb 62 f4 d5 45 a0 a3   kr........b..E..
-    0010 - 3d 00 34 25 56 ef 10 e8-29 32 2a 4a e5 52 96 db   =.4%V...)2*J.R..
-    0020 - d7 4d 11 b1 6e 08 46 3d-e7 3f 0f 94 78 08 2c 8d   .M..n.F=.?..x.,.
-    0030 - 17 4d 34 84 28 ee 92 04-b8 7f 4b 2d e7 87 e1 d8   .M4.(.....K-....
-    0040 - 6c e2 cb f2 c7 c9 4b 8a-d3 3e f4 c9 4f 0d dd 05   l.....K..>..O...
-    0050 - b5 da cf 8b 71 bc 0b c3-4b 95 6f a2 14 1d 27 d0   ....q...K.o...'.
-    0060 - 95 82 ed e1 21 d5 88 ab-91 d4 a4 07 64 07 c1 c1   ....!.......d...
-    0070 - 91 e8 db b9 54 d9 74 bb-2b 69 9e f2 7e 92 cc 13   ....T.t.+i..~...
-    0080 - d5 d8 9d 85 1f 60 7f 34-b9 14 78 85 26 44 7f 60   .....`.4..x.&D.`
-    0090 - be b0 b8 0a 43 49 da f1-30 1d 85 04 fb f9 a1 31   ....CI..0......1
-    00a0 - 45 bd 5c 0f 71 9a 14 d6-74 e5 32 ac 6d e9 5a 46   E.\.q...t.2.m.ZF
-    00b0 - 03 a4 b8 7c 1c ca ca ba-3e 4d 32 50 24 6a 6d 4b   ...|....>M2P$jmK
-    00c0 - 20 fd c5 13 91 de a7 e6-d4 38 dc 63 ae ec d3 b0    ........8.c....
+    0000 - d8 7d 3f 08 10 9b 12 50-2d 6a 5a 32 eb 3b b9 2a   .}?....P-jZ2.;.*
+    0010 - ef 18 c2 bd 1a 1c 38 9a-e5 c0 12 3f 57 ae 32 62   ......8....?W.2b
+    0020 - 17 e1 d8 79 9d 37 5a c4-a3 c3 ac 69 63 14 d8 59   ...y.7Z....ic..Y
+    0030 - b0 ce 30 48 ea d3 9a 62-1d 60 f9 7b bc a3 1b c3   ..0H...b.`.{....
+    0040 - 40 8b 9d ff 2b 58 de 6d-a0 dc d0 2a 83 f4 48 b7   @...+X.m...*..H.
+    0050 - ff e4 ca 25 0c da 8a b8-0c b4 a1 23 7a ac 25 0d   ...%.......#z.%.
+    0060 - 28 3b 2d 6a a7 0f 70 00-5d 36 17 41 b9 80 9e 81   (;-j..p.]6.A....
+    0070 - 10 8a 07 42 b3 78 f5 77-d4 d0 a4 66 2e 9f b7 41   ...B.x.w...f...A
+    0080 - 5c 07 d0 e5 5c 9e b7 0c-39 8c 02 71 d4 c4 01 77   \...\...9..q...w
+    0090 - 65 9a 0b f2 46 4e d5 85-8d 4f 06 86 74 d5 b8 39   e...FN...O..t..9
+    00a0 - 76 45 16 b3 d0 0e 91 a4-7b 6c 0a 1b 7e 9b 25 5b   vE......{l..~.%[
+    00b0 - 5c a9 5d a3 64 37 06 a9-9b 0d 81 d5 e8 64 6d 94   \.].d7.......dm.
+    00c0 - 92 92 0d 48 be 43 18 59-ce 15 cf a7 4b 43 10 44   ...H.C.Y....KC.D
 
 This is the new MSG2 ( 198 Bytes ) before Encryption:
     Ks { key + IV } (48 Bytes) is:
-    0000 - af 2f d2 62 27 1e c1 09-34 64 83 66 a9 7f 62 21   ./.b'...4d.f..b!
-    0010 - 77 ef 74 cb 0a ed df 2c-b8 0f ab b7 b7 92 a4 32   w.t....,.......2
-    0020 - 18 9a a3 4b 5b 4a 86 31-3a 5c 7d de be 78 eb cf   ...K[J.1:\}..x..
+    0000 - 87 5d 64 64 b6 d3 a6 b0-01 b4 09 c7 52 e2 b1 d8   .]dd........R...
+    0010 - f0 03 73 6a 34 06 a9 22-a7 82 cb 34 d9 37 6b be   ..sj4.."...4.7k.
+    0020 - 59 3e 28 7a 09 e1 f0 41-c5 a9 21 eb ae ae 98 d2   Y>(z...A..!.....
 
     IDb (42 Bytes) is:
     0000 - 51 75 69 64 71 75 69 64-20 6c 61 74 69 6e 65 20   Quidquid latine 
@@ -67,15 +65,15 @@ This is the new MSG2 ( 198 Bytes ) before Encryption:
     0020 - 6d 20 76 69 64 65 74 75-72 00                     m videtur.
 
     Na (4 Bytes) is:
-    0000 - 9b 53 9f 22                                       .S."
+    0000 - 08 0b cd 4d                                       ...M
 
     Encrypted Ticket (96 Bytes) is
-    0000 - 05 cb bc 23 92 29 60 a9-55 16 fd be bc 33 fb 44   ...#.)`.U....3.D
-    0010 - 2a 1c d1 2f 7f 5f 9c 38-62 8a 76 6e 8f 62 7f 58   *../._.8b.vn.b.X
-    0020 - ee d7 e5 b4 17 50 dc bb-2f ed 5e 33 d5 41 35 85   .....P../.^3.A5.
-    0030 - 02 0e 27 c0 f9 cf 81 3a-77 b3 e5 20 a4 2e c0 13   ..'....:w.. ....
-    0040 - 85 10 62 3e 34 05 12 81-19 1b db 22 61 b9 d0 cd   ..b>4......"a...
-    0050 - 1b cc 7e 93 11 95 fa 04-8d 5e 6c 6c 92 20 d1 bb   ..~......^ll. ..
+    0000 - 23 78 27 f4 ba 81 ce ed-4d e0 12 0f 64 ae 2b 65   #x'.....M...d.+e
+    0010 - df 06 fb 9e a0 29 18 5e-96 8e 49 8c 39 43 25 0a   .....).^..I.9C%.
+    0020 - b9 f3 5e 98 09 6c 53 90-a5 d8 2d 7f 7e f6 8d ad   ..^..lS...-.~...
+    0030 - e9 f3 22 ee e9 93 8a c6-9f e6 4d 3a 88 63 36 aa   ..".......M:.c6.
+    0040 - 82 8c 38 fc a3 9b 50 f6-7e c5 e4 69 9b 42 9c b0   ..8...P.~..i.B..
+    0050 - ef 4c 81 c7 fd 76 a0 73-74 10 26 3d 05 66 4e b2   .L...v.st.&=.fN.
 
 The KDC sent the above Encrypted MSG2 ( 208 bytes ) via FD=6 Successfully
 

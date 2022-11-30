@@ -76,7 +76,7 @@ int main ( int argc , char * argv[] )
     BIO_dump_indent_fp ( log , (const char *) &Ks, sizeof( myKey_t ) , 4 );    fprintf( log , "\n" );   
     fflush(log);
 
-    fprintf( log , "\nBasim also learned the following\n    IDa= '%s'\n" , IDa );
+    fprintf( log , "Basim also learned the following\n    IDa= '%s'\n" , IDa );
     
     fprintf( log , "    Na2 ( %lu Bytes ) is:\n" , NONCELEN );
     BIO_dump_indent_fp ( log , (const char *) Na2, NONCELEN, 4 );
@@ -99,7 +99,7 @@ int main ( int argc , char * argv[] )
 
     // Create a random Nonce by B to challenge A
     RAND_bytes( (unsigned char *) Nb , NONCELEN  ); 
-    fprintf( log , "Basim Created this nonce Nb for MSG4:\n") ;
+    fprintf( log , "\nBasim Created this nonce Nb for MSG4:\n") ;
     BIO_dump_indent_fp ( log , (const char *) Nb, NONCELEN, 4 );
     fflush(log);
 
@@ -129,13 +129,13 @@ int main ( int argc , char * argv[] )
     // Get MSG5 from Amal
     MSG5_receive( log, fd_A2B, &Ks, &fNbCpy ) ;
     
-    fprintf(log, "\n+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
+    fprintf(log, "+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+\n");
     fprintf( log , "\nBasim expecting back this fNb in MSG5:\n") ;
     fNonce(fNb, Nb);
     BIO_dump_indent_fp ( log , (const char *) fNb, NONCELEN, 4 );
 
                   
-    fprintf( log , "Basim received Message 5 from Amal on FD %d with this f( Nb ) >>>> " , fd_A2B ) ;
+    fprintf( log , "\nBasim received Message 5 from Amal on FD %d with this f( Nb ) >>>> " , fd_A2B ) ;
     // Validate f( Nb ) 
     if ( memcmp(&fNb, &fNbCpy, NONCELEN) == 0 )
     {
